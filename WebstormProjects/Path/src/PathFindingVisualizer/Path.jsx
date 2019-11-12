@@ -3,11 +3,12 @@ import Node from './Node/Node';
 
 import './Path.css'
 import {BFS} from './Algorithms/BFS';
+import {DFS} from "./Algorithms/DFS";
 
 const START_NODE_ROW = 5;
 const START_NODE_COL = 10;
-const FINISH_NODE_ROW = 8;
-const FINISH_NODE_COL = 25;
+const FINISH_NODE_ROW = 5;
+const FINISH_NODE_COL = 15;
 const GRID_ROW_LENGTH = 20;
 const GRID_COL_LENGTH = 50;
 
@@ -17,7 +18,11 @@ export default class Path extends Component {
         this.state = {
             nodes: [],
             mousePressed: false,
+            algorithm: "BFS",
         };
+        this.selectAlgorithm = this.selectAlgorithm.bind(this);
+        this.visualizeDFS = this.visualizeDFS.bind(this);
+        this.visualizeBFS = this.visualizeBFS.bind(this);
     }
 
 
@@ -79,48 +84,101 @@ export default class Path extends Component {
         const startNode = nodes[START_NODE_ROW][START_NODE_COL];
         const endNode = nodes[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNode = BFS(nodes, startNode, endNode);
-        console.log(visitedNode);
+        this.animateBFS(visitedNode);
+    }
+
+    visualizeDFS() {
+        const {nodes} = this.state;
+        const startNode = nodes[START_NODE_ROW][START_NODE_COL];
+        const endNode = nodes[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const visitedNode = DFS(nodes, startNode, endNode);
         this.animateBFS(visitedNode);
     }
 
     animateBFS(visitedNode) {
         for (let i =0; i < visitedNode.length; i++) {
             setTimeout(() => {
-                const node = visitedNode[i];
-                const newGrid = this.state.nodes.slice();
-                const newNode = {
-                    ...node,
-                    isAnimated: true,
-                };
-                newGrid[node.row][node.col] = newNode;
-                this.setState({nodes: newGrid})},
+                    const node = visitedNode[i];
+                    const newGrid = this.state.nodes.slice();
+                    const newNode = {
+                        ...node,
+                        isAnimated: true,
+                    };
+                    newGrid[node.row][node.col] = newNode;
+                    this.setState({nodes: newGrid})},
                 45*i);
         }
     }
 
+    clearBoard() {
+        const {nodes} = this.state;
+        const newGrid = this.state.nodes.slice();
+        for ( var row=0; row < nodes.length; row++) {
+            const column = nodes[row];
+            for (var col =0; col < column.length; col ++) {
+                var currentNode = column[col];
+                if (!currentNode['isStart'] || !currentNode['isFinish']) {
+                    currentNode['isWall'] = false;
+                    currentNode['isAnimated'] = false;
+                    currentNode['isVisited'] = false;
+                    newGrid[row][col] = currentNode
+                }
+            }
+        }
+        this.setState({nodes:newGrid})
+    }
+
+
+    visualizeAlgorithm() {
+        const {algorithm} = this.state;
+        if (algorithm === "BFS") {
+            this.visualizeBFS();
+        } else if (algorithm === "DFS") {
+            this.visualizeDFS();
+        }
+    }
+
+    selectAlgorithm(event) {
+        this.setState({algorithm: event.target.value});
+        this.clearBoard();
+    }
     render() {
-        const {nodes, mousePressed} = this.state;
+        const {nodes, mousePressed,algorithm} = this.state;
+        console.log(algorithm);
         return (
             <>
-            <button className="button" onClick={() => this.visualizeBFS()}>
-                Visualize BFS
+            <button className="button" onClick={() => this.visualizeAlgorithm()}>
+                Visualize {algorithm}
+            </button>
+            <button className="button" onClick={() => this.clearBoard()}>
+                Clear Board
             </button>
             <ul className="iconList">
-                <li className="iconList startNode">
-                    <div className='box'>
-                        <img src="arrow.jpg">
-                        </img>
+                <li className="iconList">
+                    <div className='box startNode'>
                     </div>
                     Start Node
                 </li>
-                <li className="iconList endNode">
+                <li className="iconList">
+                    <div className='box endNode'>
+                    </div>
                     End Node
                 </li>
-                <li className="iconList unvisitedNode">
+                <li className="iconList">
+                    <div className='box'>
+                    </div>
                     Unvisited Node
                 </li>
-                <li className="iconList visitedNode">
+                <li className="iconList">
+                    <div className='box visitedNode'>
+                    </div>
                     Visited Node
+                </li>
+                <li className='iconList'>
+                    <select name ="AlgorithmSelect" onChange={this.selectAlgorithm}>
+                        <option value="BFS"> BFS</option>
+                        <option value="DFS"> DFS</option>
+                    </select>
                 </li>
             </ul>
             <div className="grid">
