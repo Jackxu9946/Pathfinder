@@ -1,0 +1,41 @@
+.grids {
+    margin: 150px 0 0;
+    position: absolute;
+}
+
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.iconList {
+    display: inline-block;
+    margin: 10px;
+    align-items: center;
+}
+
+.box {
+    float: left;
+    height: 5px;
+    width: 5px;
+    margin-bottom: 15px;
+    border: 1px solid black;
+    clear: both;
+    display: inline-block;
+}
+
+.arrow {
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    text-align: center;
+}
