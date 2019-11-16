@@ -16,13 +16,16 @@ export default class Node extends Component {
             isWall,
             onMouseDown,
             onMouseEnter,
-            onMouseUp
+            onMouseUp,
+            isShortestPathNode,
         } = this.props;
         const extraClassName = isFinish ? 'node-finish':
             isStart ? 'node-start':
+            isShortestPathNode ? 'node-shortest-path':
             isAnimated ? 'node-visited':
             isWall ? 'node-wall':
             '';
+        //console.log(extraClassName);
         return <div
             id = {`node-${row}-${col}`}
             className={`node ${extraClassName}`}

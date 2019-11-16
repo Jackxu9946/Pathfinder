@@ -4,13 +4,14 @@ import Node from './Node/Node';
 import './Path.css'
 import {BFS} from './Algorithms/BFS';
 import {DFS} from "./Algorithms/DFS";
+import {Dijkstra, constructShortestPath} from "./Algorithms/Djikstra"
 
 const START_NODE_ROW = 5;
-const START_NODE_COL = 10;
-const FINISH_NODE_ROW = 5;
-const FINISH_NODE_COL = 15;
+const START_NODE_COL = 5;
+const FINISH_NODE_ROW = 10;
+const FINISH_NODE_COL = 10;
 const GRID_ROW_LENGTH = 20;
-const GRID_COL_LENGTH = 50;
+const GRID_COL_LENGTH = 35;
 
 export default class Path extends Component {
     constructor(prop) {
@@ -24,8 +25,6 @@ export default class Path extends Component {
         this.visualizeDFS = this.visualizeDFS.bind(this);
         this.visualizeBFS = this.visualizeBFS.bind(this);
     }
-
-
 
     componentDidMount() {
         const nodes = [];
@@ -44,6 +43,9 @@ export default class Path extends Component {
                     isVisited: false,
                     isAnimated: false,
                     isWall: false,
+                    distance: row === START_NODE_ROW && col === START_NODE_COL ? 0 : "infinity",
+                    previous : [null,null],
+                    isShortestPathNode: false
                 };
                 currentRow.push(nodeObject)
             }
@@ -53,9 +55,9 @@ export default class Path extends Component {
     }
 
     handleMouseDown(row,col) {
-        const newGrid = this.makeNewGridWithWall(row,col);
+        //const newGrid = this.makeNewGridWithWall(row,col);
         const mousePressed = this.state.mousePressed;
-        this.setState({nodes:newGrid, mousePressed:!mousePressed});
+        this.setState({mousePressed:true});
     }
 
     handleMouseUp() {
@@ -84,7 +86,7 @@ export default class Path extends Component {
         const startNode = nodes[START_NODE_ROW][START_NODE_COL];
         const endNode = nodes[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNode = BFS(nodes, startNode, endNode);
-        this.animateBFS(visitedNode);
+        this.animate(visitedNode);
     }
 
     visualizeDFS() {
@@ -92,13 +94,43 @@ export default class Path extends Component {
         const startNode = nodes[START_NODE_ROW][START_NODE_COL];
         const endNode = nodes[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNode = DFS(nodes, startNode, endNode);
-        this.animateBFS(visitedNode);
+        this.animate(visitedNode);
     }
 
-    animateBFS(visitedNode) {
-        for (let i =0; i < visitedNode.length; i++) {
+    visualizeDjikstra() {
+        const {nodes,initialAnimationFinished} = this.state;
+        const startNode = nodes[START_NODE_ROW][START_NODE_COL];
+        const endNode = nodes[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const visitedNode = Dijkstra(nodes,startNode,endNode);
+        const beforeTimeStartInterval = this.animate(visitedNode) + 35;
+        var shortestPath = constructShortestPath(nodes, startNode, endNode);
+        shortestPath = shortestPath.reverse();
+        this.animateShortestPath(shortestPath,beforeTimeStartInterval);
+    }
+
+    animateShortestPath(visitedNode, beforeTimeStartInterval) {
+        for (let i = 0; i < visitedNode.length; i++)
+        {
             setTimeout(() => {
                     const node = visitedNode[i];
+                    const newGrid = this.state.nodes.slice();
+                    const newNode = {
+                        ...node,
+                        isShortestPathNode: true,
+                    };
+                    newGrid[node.row][node.col] = newNode;
+                    this.setState({nodes: newGrid})},
+                45*(i+beforeTimeStartInterval));
+        }
+    }
+
+    animate(visitedNode) {
+        for (let i =0; i < visitedNode.length; i++) {
+            const node = visitedNode[i];
+            if (node.row === FINISH_NODE_ROW && node.col === FINISH_NODE_COL) {
+                return i;
+            }
+            setTimeout(() => {
                     const newGrid = this.state.nodes.slice();
                     const newNode = {
                         ...node,
@@ -121,6 +153,7 @@ export default class Path extends Component {
                     currentNode['isWall'] = false;
                     currentNode['isAnimated'] = false;
                     currentNode['isVisited'] = false;
+                    currentNode['isShortestPathNode'] = false;
                     newGrid[row][col] = currentNode
                 }
             }
@@ -135,6 +168,8 @@ export default class Path extends Component {
             this.visualizeBFS();
         } else if (algorithm === "DFS") {
             this.visualizeDFS();
+        } else if (algorithm === "Djikstra") {
+            this.visualizeDjikstra()
         }
     }
 
@@ -142,11 +177,11 @@ export default class Path extends Component {
         this.setState({algorithm: event.target.value});
         this.clearBoard();
     }
+
     render() {
         const {nodes, mousePressed,algorithm} = this.state;
-        console.log(algorithm);
         return (
-            <>
+            <div className ="outerContainer">
             <button className="button" onClick={() => this.visualizeAlgorithm()}>
                 Visualize {algorithm}
             </button>
@@ -174,40 +209,47 @@ export default class Path extends Component {
                     </div>
                     Visited Node
                 </li>
+                <li className="iconList">
+                    <div className='box Wall'>
+                    </div>
+                    Wall
+                </li>
                 <li className='iconList'>
-                    <select name ="AlgorithmSelect" onChange={this.selectAlgorithm}>
+                    <select className ="AlgorithmSelect" onChange={this.selectAlgorithm}>
                         <option value="BFS"> BFS</option>
                         <option value="DFS"> DFS</option>
+                        <option value="Djikstra"> Djikstra </option>
                     </select>
                 </li>
             </ul>
             <div className="grid">
-                {nodes.map((row, rowIdx) => {
-                    return (
-                        <div key={rowIdx}>
-                            {row.map((node, nodeIdx) => {
-                                const {isStart, isFinish,isAnimated, row, col,isWall} = node;
-                                return (
-                                    <Node
-                                        key={nodeIdx}
-                                        isStart = {isStart}
-                                        isFinish = {isFinish}
-                                        isAnimated = {isAnimated}
-                                        isWall = {isWall}
-                                        onMouseDown={(row,col) => this.handleMouseDown(row,col)}
-                                        onMouseEnter={(row,col) => this.handleMouseEnter(row,col)}
-                                        mousePressed ={mousePressed}
-                                        onMouseUp= {() => this.handleMouseUp()}
-                                        row={row}
-                                        col={col}
-                                    >
-                                    </Node>
-                                );
-                            })}
-                    </div>
-                    );
-                })}
-            </div>
-            </>);
+            {nodes.map((row, rowIdx) => {
+                return (
+                    <div key={rowIdx} className={`row-${rowIdx}`}>
+                        {row.map((node, nodeIdx) => {
+                            const {isStart, isFinish,isAnimated, row, col,isWall, isShortestPathNode} = node;
+                            return (
+                                <Node
+                                    key={nodeIdx}
+                                    isStart = {isStart}
+                                    isFinish = {isFinish}
+                                    isAnimated = {isAnimated}
+                                    isWall = {isWall}
+                                    isShortestPathNode = {isShortestPathNode}
+                                    onMouseDown={(row,col) => this.handleMouseDown(row,col)}
+                                    onMouseEnter={(row,col) => this.handleMouseEnter(row,col)}
+                                    mousePressed ={mousePressed}
+                                    onMouseUp= {() => this.handleMouseUp()}
+                                    row={row}
+                                    col={col}
+                                >
+                                </Node>
+                            );
+                        })}
+                </div>
+                );
+            })}
+        </div>
+        </div>);
     }
 }
