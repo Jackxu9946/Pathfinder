@@ -28,8 +28,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Path.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="229" column="71" selection-start-line="229" selection-start-column="71" selection-end-line="229" selection-end-column="71" />
+            <state relative-caret-position="204">
+              <caret line="12" column="26" selection-start-line="12" selection-start-column="26" selection-end-line="12" selection-end-column="26" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -40,8 +40,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Algorithms/Djikstra.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-182">
-              <caret line="70" column="48" lean-forward="true" selection-start-line="70" selection-start-column="48" selection-end-line="70" selection-end-column="48" />
+            <state relative-caret-position="337">
+              <caret line="50" column="53" selection-start-line="50" selection-start-column="53" selection-end-line="50" selection-end-column="53" />
             </state>
           </provider>
         </entry>
@@ -101,7 +101,10 @@
       <find>mousepressed</find>
       <find>handleMouseUp</find>
       <find>isEnd</find>
+      <find>animate</find>
+      <find>constructShortestPath</find>
       <find>console.log</find>
+      <find>clearBoard</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -222,12 +225,12 @@
       <workItem from="1573538944412" duration="9549000" />
       <workItem from="1573881673811" duration="5528000" />
       <workItem from="1573937825216" duration="13988000" />
-      <workItem from="1574234528387" duration="2696000" />
+      <workItem from="1574234528387" duration="6753000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58095000" />
+    <option name="totallyTimeSpent" value="62152000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -340,15 +343,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Algorithms/Djikstra.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-182">
-          <caret line="70" column="48" lean-forward="true" selection-start-line="70" selection-start-column="48" selection-end-line="70" selection-end-column="48" />
+        <state relative-caret-position="337">
+          <caret line="50" column="53" selection-start-line="50" selection-start-column="53" selection-end-line="50" selection-end-column="53" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Path.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="229" column="71" selection-start-line="229" selection-start-column="71" selection-end-line="229" selection-end-column="71" />
+        <state relative-caret-position="204">
+          <caret line="12" column="26" selection-start-line="12" selection-start-column="26" selection-end-line="12" selection-end-column="26" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>

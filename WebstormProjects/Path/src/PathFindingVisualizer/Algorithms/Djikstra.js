@@ -11,16 +11,17 @@ export function Dijkstra(grid, startNode, endNode) {
     while (queueOfVisited.length > 0) {
         const currentNode = queueOfVisited.shift();
         visitedInOrder.push(currentNode);
+        // console.log("Current Node is ["+ currentNode.row + ',' + currentNode.col + ']');
         if (!currentNode['isVisited']) {
             const currentRow = currentNode['row'];
             const currentCol = currentNode['col'];
             const currentDistance = currentNode['distance'];
             // console.log("Current Distance Is " + currentDistance);
             var nextDistance = currentDistance + 1;
-            if (currentRow === row && currentCol === col) {
-                console.log("Current Distance Is " + currentDistance);
-                console.log("Next distance is" + nextDistance);
-            }
+            // if (currentRow === row && currentCol === col) {
+            //     console.log("Current Distance Is " + currentDistance);
+            //     console.log("Next distance is" + nextDistance);
+            // }
             if (currentNode['isTop'] === false) {
                 const aboveNode = grid[currentRow - 1][currentCol];
                 if (aboveNode['isVisited'] === false && !aboveNode['isWall']) {
@@ -78,7 +79,7 @@ export function Dijkstra(grid, startNode, endNode) {
             currentNode['isVisited'] = true;
         }
     }
-    console.log(grid);
+        // console.log(grid);
     return visitedInOrder;
 }
 

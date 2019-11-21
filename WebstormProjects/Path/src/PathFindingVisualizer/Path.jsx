@@ -8,7 +8,7 @@ import {Dijkstra, constructShortestPath} from "./Algorithms/Djikstra"
 
 const START_NODE_ROW = 0;
 const START_NODE_COL = 0;
-const FINISH_NODE_ROW = 10;
+const FINISH_NODE_ROW = 5;
 const FINISH_NODE_COL = 5;
 const GRID_ROW_LENGTH = 25;
 const GRID_COL_LENGTH = 60;
@@ -157,9 +157,13 @@ export default class Path extends Component {
         const {nodes,initialAnimationFinished,currentStartNode, currentEndNode} = this.state;
         const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
         const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
-        console.log("StartNode "+ startNode.row + ',' + startNode.col);
-        console.log("endNode" + endNode.row + ',' + endNode.col);
+        // console.log("StartNode "+ startNode.row + ',' + startNode.col);
+        // console.log("endNode" + endNode.row + ',' + endNode.col);
+        console.log("Before Djisktra");
+        console.log(nodes);
         const visitedNode = Dijkstra(nodes,startNode,endNode);
+        console.log("After visiting with Djikstra");
+        console.log(nodes);
         const beforeTimeStartInterval = this.animate(visitedNode) + 35;
         var shortestPath = constructShortestPath(nodes, startNode, endNode);
         if (shortestPath === "No path exist") {
@@ -244,16 +248,40 @@ export default class Path extends Component {
             const column = nodes[row];
             for (var col =0; col < column.length; col ++) {
                 var currentNode = column[col];
-                if (!currentNode['isStart'] || !currentNode['isFinish']) {
-                    currentNode['isWall'] = false;
+                if (currentNode['isStart']) {
+                    // currentNode['isWall'] = false;
                     currentNode['isAnimated'] = false;
                     currentNode['isVisited'] = false;
                     currentNode['isShortestPathNode'] = false;
+                    currentNode['distance'] = 0;
+                    newGrid[row][col] = currentNode
+                }
+                else {
+                    // currentNode['isWall'] = false;
+                    currentNode['isAnimated'] = false;
+                    currentNode['isVisited'] = false;
+                    currentNode['isShortestPathNode'] = false;
+                    currentNode['distance'] = "infinity";
                     newGrid[row][col] = currentNode
                 }
             }
         }
+        console.log("After clearing board");
+        console.log(newGrid);
         this.setState({nodes:newGrid})
+    }
+
+    clearWall() {
+        const {nodes} = this.state;
+        const newGrid = this.state.nodes.slice();
+        for ( var row=0; row < nodes.length; row++) {
+            const column = nodes[row];
+            for (var col =0; col < column.length; col ++) {
+                var currentNode = column[col];
+                currentNode['isWall'] = false;
+            }
+        }
+        this.setState( {nodes:newGrid})
     }
 
 
@@ -283,6 +311,9 @@ export default class Path extends Component {
             <button className="button" onClick={() => this.clearBoard()}>
                 Clear Board
             </button>
+                <button className="button" onClick={() => this.clearWall()}>
+                    Clear Wall
+                </button>
             <ul className="iconList">
                 <li className="iconList">
                     <div className='box startNode'>
