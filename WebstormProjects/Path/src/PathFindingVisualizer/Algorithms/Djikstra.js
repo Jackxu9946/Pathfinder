@@ -3,6 +3,7 @@ export function Dijkstra(grid, startNode, endNode) {
     const endRow = endNode['row'];
     const endCol = endNode['col'];
     const queueOfVisited = [];
+    // console.log(grid);
     const visitedInOrder = [];
     if (grid != null && startNode != null) {
         queueOfVisited.push(startNode);
@@ -14,7 +15,12 @@ export function Dijkstra(grid, startNode, endNode) {
             const currentRow = currentNode['row'];
             const currentCol = currentNode['col'];
             const currentDistance = currentNode['distance'];
+            // console.log("Current Distance Is " + currentDistance);
             var nextDistance = currentDistance + 1;
+            if (currentRow === row && currentCol === col) {
+                console.log("Current Distance Is " + currentDistance);
+                console.log("Next distance is" + nextDistance);
+            }
             if (currentNode['isTop'] === false) {
                 const aboveNode = grid[currentRow - 1][currentCol];
                 if (aboveNode['isVisited'] === false && !aboveNode['isWall']) {
@@ -59,9 +65,20 @@ export function Dijkstra(grid, startNode, endNode) {
                     }
                 }
             }
+            // if (currentNode.row === row && currentNode.col === col) {
+            //     const rightNode = grid[currentRow][currentCol + 1];
+            //     const leftNode = grid[currentRow][currentCol - 1];
+            //     const topNode = grid[currentRow-1][currentCol];
+            //     const belowNode = grid[currentRow+1][currentCol];
+            //     console.log("Right Node distance =" + rightNode.distance);
+            //     console.log("Left Node distance =" + leftNode.distance);
+            //     console.log("Top node distance = " + topNode.distance);
+            //     console.log("Below node distance = " + belowNode.distance);
+            // }
             currentNode['isVisited'] = true;
         }
     }
+    console.log(grid);
     return visitedInOrder;
 }
 
@@ -71,15 +88,20 @@ export function constructShortestPath(grid,StartNode,endNode) {
     var currentNode = endNode;
     var visitedStack = [];
     while (currentNode != null) {
+        // console.log("Current Node" + currentNode.row + ',' + currentNode.col);
+        // console.log("Current node distance is " + currentNode.distance);
+        // console.log("Current Node Previous is" + currentNode['previous']);
         if (currentNode['distance'] === "infinity") {
             return "No path exist";
         } else {
             const currentRow = currentNode['row'];
             const currentCol = currentNode['col'];
+            // console.log("StartNode value is " + startRow + ',' + startCol);
             if (currentRow === startRow && currentCol === startCol) {
                 return visitedStack;
             } else {
                 const previousNodeCoords = currentNode['previous'];
+                // console.log("previousNodeCoords = " + previousNodeCoords[0] + "," + previousNodeCoords[1]);
                 currentNode = grid[previousNodeCoords[0]][previousNodeCoords[1]]
             }
             visitedStack.push(currentNode);

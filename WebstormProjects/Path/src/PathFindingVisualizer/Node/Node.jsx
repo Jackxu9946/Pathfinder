@@ -25,13 +25,12 @@ export default class Node extends Component {
             isAnimated ? 'node-visited':
             isWall ? 'node-wall':
             '';
-        //console.log(extraClassName);
         return <div
             id = {`node-${row}-${col}`}
             className={`node ${extraClassName}`}
             onMouseDown ={() => onMouseDown(row,col)}
             onMouseEnter ={() => onMouseEnter(row,col)}
-            onMouseUp = {() => onMouseUp}>
+            onMouseUp = {() => onMouseUp(row,col)}>
         </div>;
     }
 }
