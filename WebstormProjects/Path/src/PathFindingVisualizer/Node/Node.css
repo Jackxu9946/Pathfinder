@@ -16,6 +16,7 @@
     display: inline-grid;
     position: relative;
     border-collapse: collapse;
+    padding: 0px;
 }
 
 .node-finish {

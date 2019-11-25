@@ -4,8 +4,7 @@ import Node from './Node/Node';
 import './Path.css'
 import {BFS} from './Algorithms/BFS';
 import {DFS} from "./Algorithms/DFS";
-import {Dijkstra, constructShortestPath} from "./Algorithms/Djikstra"
-import cloneDeep from 'lodash/cloneDeep'
+import {constructShortestPath, Dijkstra} from "./Algorithms/Djikstra"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button} from 'react-bootstrap';
 
@@ -85,6 +84,62 @@ export default class Path extends Component {
     handleMouseUp(row,col) {
         // console.log("Handle Mouse Up");
         const {previousStartNode, previousEndNode} = this.state;
+        // if (this.state.movingStartNode) {
+        //     // console.log("Moving start Node");
+        //     const newGrid = this.state.nodes.slice();
+        //     const currentNode = this.state.nodes[row][col];
+        //     const newNode = {
+        //         ...currentNode,
+        //         isStart: true,
+        //         distance: 0,
+        //     };
+        //     const oldStartNode = this.state.nodes[previousStartNode[0]][previousStartNode[1]];
+        //     const oldNoLongerStartNode = {
+        //         ...oldStartNode,
+        //         isStart: false,
+        //         distance: "infinity",
+        //     };
+        //     newGrid[row][col] = newNode;
+        //     newGrid[previousStartNode[0]][previousStartNode[1]] = oldNoLongerStartNode;
+        //     this.setState({nodes:newGrid, currentStartNode: [newNode.row,newNode.col]});
+        //     this.clearBoard();
+        //
+        //     console.log("Start node instant animation");
+        //     // console.log("Current algorithm is" + this.state.algorithm + " alreadyVisualized = " + this.state.alreadyVisualized);
+        //     if (this.state.algorithm === "Djikstra" && this.state.alreadyVisualized) {
+        //         setTimeout(() => {
+        //             this.instantAnimationWithShortestPath();
+        //         }, 0)
+        //     }
+        // }
+        // else
+        //     if (this.state.movingEndNode) {
+        //     // console.log("Moving End Node");
+        //     const newGrid = this.state.nodes.slice();
+        //     const currentNode = this.state.nodes[row][col];
+        //     const newNode = {
+        //         ...currentNode,
+        //         isFinish: true
+        //     };
+        //     const oldEndNode = this.state.nodes[previousEndNode[0]][previousEndNode[1]];
+        //     const oldNoLongerEndNode = {
+        //         ...oldEndNode,
+        //         isFinish: false,
+        //     };
+        //     newGrid[row][col] = newNode;
+        //     newGrid[previousEndNode[0]][previousEndNode[1]] = oldNoLongerEndNode;
+        //     this.setState({nodes:newGrid, currentEndNode:[newNode.row, newNode.col]});
+        //     this.clearBoard();
+        //     // console.log("end node instant animation ");
+        //     // if (this.state.algorithm === "Djikstra" && this.state.alreadyVisualized) {
+        //     //     this.instantAnimationWithShortestPath();
+        //     // }
+        // }
+        this.setState({mousePressed:false, movingStartNode:false, movingEndNode:false});
+    }
+
+    handleMouseOver(row,col) {
+        const {previousStartNode, previousEndNode} = this.state;
         if (this.state.movingStartNode) {
             // console.log("Moving start Node");
             const newGrid = this.state.nodes.slice();
@@ -102,15 +157,19 @@ export default class Path extends Component {
             };
             newGrid[row][col] = newNode;
             newGrid[previousStartNode[0]][previousStartNode[1]] = oldNoLongerStartNode;
-            this.setState({nodes:newGrid, currentStartNode: [newNode.row,newNode.col]});
+            console.log("Previous start node = " + oldNoLongerStartNode.row + "," + oldNoLongerStartNode.col + " and isStart =" + oldNoLongerStartNode.isStart);
+            console.log("After setting previous start node to nothing");
+            console.log(newGrid);
+            this.setState({nodes:newGrid, currentStartNode: [newNode.row,newNode.col], previousStartNode:[newNode.row, newNode.col]});
             this.clearBoard();
 
-            console.log("Start node instant animation");
+            // console.log("Start node instant animation");
             // console.log("Current algorithm is" + this.state.algorithm + " alreadyVisualized = " + this.state.alreadyVisualized);
             if (this.state.algorithm === "Djikstra" && this.state.alreadyVisualized) {
                 setTimeout(() => {
+                    // this.clearBoard();
                     this.instantAnimationWithShortestPath();
-                }, 100)
+                }, 0)
             }
         } else if (this.state.movingEndNode) {
             // console.log("Moving End Node");
@@ -127,14 +186,16 @@ export default class Path extends Component {
             };
             newGrid[row][col] = newNode;
             newGrid[previousEndNode[0]][previousEndNode[1]] = oldNoLongerEndNode;
-            this.setState({nodes:newGrid, currentEndNode:[newNode.row, newNode.col]});
+            this.setState({nodes:newGrid, currentEndNode:[newNode.row, newNode.col], previousEndNode: [newNode.row, newNode.col]});
             this.clearBoard();
-            console.log("end node instant animation ");
-            // if (this.state.algorithm === "Djikstra" && this.state.alreadyVisualized) {
-            //     this.instantAnimationWithShortestPath();
-            // }
+            // console.log("end node instant animation ");
+            if (this.state.algorithm === "Djikstra" && this.state.alreadyVisualized) {
+                setTimeout(() => {
+                    // this.clearBoard();
+                    this.instantAnimationWithShortestPath();
+                }, 0)
+            }
         }
-        this.setState({mousePressed:false, movingStartNode:false, movingEndNode:false});
     }
 
 
@@ -218,21 +279,21 @@ export default class Path extends Component {
                 }, 65 * (i + beforeTimeStartInterval));
             }
         }
-        else {
-            for (let i = 0; i < visitedNode.length; i++) {
-                const node = visitedNode[i];
-                const newNode = {
-                    ...node,
-                    isShortestPathNode: true,
-                };
-                setTimeout(() => {
-                    newGrid[node.row][node.col] = newNode;
-                    if (i === visitedNode.length -1) {
-                        this.setState({nodes:newGrid})
-                    }
-                }, 0);
-            }
-        }
+        // else {
+        //     for (let i = 0; i < visitedNode.length; i++) {
+        //         const node = visitedNode[i];
+        //         const newNode = {
+        //             ...node,
+        //             isShortestPathNode: true,
+        //         };
+        //         setTimeout(() => {
+        //             newGrid[node.row][node.col] = newNode;
+        //             if (i === visitedNode.length -1) {
+        //                 this.setState({nodes:newGrid})
+        //             }
+        //         }, 0);
+        //     }
+        // }
     }
 
     animate(visitedNode) {
@@ -258,11 +319,11 @@ export default class Path extends Component {
         const {nodes,initialAnimationFinished,currentStartNode, currentEndNode} = this.state;
         const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
         const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
-        console.log(nodes);
-        console.log("start node is " + startNode.row + "," + startNode.col);
-        console.log("end node is " + endNode.row + "," + endNode.col);
+        // console.log(nodes);
+        // console.log("start node is " + startNode.row + "," + startNode.col);
+        // console.log("end node is " + endNode.row + "," + endNode.col);
         const visitedNode = Dijkstra(nodes,startNode,endNode);
-        console.log("Went through Djikstra");
+        // console.log("Went through Djikstra");
         const newGrid = this.state.nodes.slice();
         for (let i =0; i < visitedNode.length; i++) {
             const node = visitedNode[i];
@@ -276,19 +337,26 @@ export default class Path extends Component {
             };
             newGrid[node.row][node.col] = newNode;
         }
-        console.log("Before shortest path");
+        // console.log("Before shortest path");
         var shortestPath = constructShortestPath(nodes, startNode, endNode);
         if (shortestPath === "No path exist") {
             console.log("No path exist");
             return;
         }
         shortestPath = shortestPath.reverse();
-        this.animateShortestPath(shortestPath,0, false);
+        for (let i = 0; i < shortestPath.length; i++) {
+            const node = shortestPath[i];
+            const newNode = {
+                ...node,
+                isShortestPathNode: true,
+            };
+            newGrid[newNode.row][newNode.col] = newNode;
+        };
         this.setState({nodes:newGrid});
     }
 
     clearBoard(resetAlreadyVisualized) {
-        const {nodes} = this.state;
+        const {nodes,currentStartNode,currentEndNode} = this.state;
         const newGrid = this.state.nodes.slice();
         for ( var row=0; row < nodes.length; row++) {
             const column = nodes[row];
@@ -356,78 +424,81 @@ export default class Path extends Component {
         const {nodes, mousePressed,algorithm, alreadyVisualized} = this.state;
         return (
             <div className ="outerContainer">
-            <Button className="button" onClick={() => this.visualizeAlgorithm()}>
-                Visualize {algorithm}
-            </Button>
-            <Button className="button" onClick={() => this.clearBoard(true)}>
-                Clear Board
-            </Button>
+                <Button className="button" onClick={() => this.visualizeAlgorithm()}>
+                    Visualize {algorithm}
+                </Button>
+                <Button className="button" onClick={() => this.clearBoard(true)}>
+                    Clear Board
+                </Button>
                 <Button className="button" onClick={() => this.clearWall()}>
                     Clear Wall
                 </Button>
-            <ul className="iconList">
-                <li className="iconList">
-                    <div className='box startNode'>
+                <Button>
+                    <div className ="dropdown">
+                        <select className ="AlgorithmSelect" onChange={this.selectAlgorithm}>
+                            <option value="BFS"> BFS</option>
+                            <option value="DFS"> DFS</option>
+                            <option value="Djikstra"> Djikstra </option>
+                        </select>
                     </div>
-                    Start Node
-                </li>
-                <li className="iconList">
-                    <div className='box endNode'>
+                </Button>
+                <ul className="iconList">
+                    <li className="iconList">
+                        <div className='box startNode'>
+                        </div>
+                        Start Node
+                    </li>
+                    <li className="iconList">
+                        <div className='box endNode'>
+                        </div>
+                        End Node
+                    </li>
+                    <li className="iconList">
+                        <div className='box'>
+                        </div>
+                        Unvisited Node
+                    </li>
+                    <li className="iconList">
+                        <div className='box visitedNode'>
+                        </div>
+                        Visited Node
+                    </li>
+                    <li className="iconList">
+                        <div className='box Wall'>
+                        </div>
+                        Wall
+                    </li>
+                </ul>
+                <div className="grid">
+                {nodes.map((row, rowIdx) => {
+                    return (
+                        <div key={rowIdx} className={`row-${rowIdx}`}>
+                            {row.map((node, nodeIdx) => {
+                                const {isStart, isFinish,isAnimated, row, col,isWall, isShortestPathNode} = node;
+                                return (
+                                    <Node
+                                        key={nodeIdx}
+                                        isStart = {isStart}
+                                        isFinish = {isFinish}
+                                        isAnimated = {isAnimated}
+                                        isWall = {isWall}
+                                        isShortestPathNode = {isShortestPathNode}
+                                        onMouseDown={(row,col) => this.handleMouseDown(row,col)}
+                                        onMouseEnter={(row,col) => this.handleMouseEnter(row,col)}
+                                        mousePressed ={mousePressed}
+                                        onMouseUp= {() => this.handleMouseUp(row,col)}
+                                        onMouseOver={ () => this.handleMouseOver(row,col)}
+                                        row={row}
+                                        col={col}
+                                        instantAnimation = {alreadyVisualized}
+                                    >
+                                    </Node>
+                                );
+                            })}
                     </div>
-                    End Node
-                </li>
-                <li className="iconList">
-                    <div className='box'>
-                    </div>
-                    Unvisited Node
-                </li>
-                <li className="iconList">
-                    <div className='box visitedNode'>
-                    </div>
-                    Visited Node
-                </li>
-                <li className="iconList">
-                    <div className='box Wall'>
-                    </div>
-                    Wall
-                </li>
-                <li className='iconList'>
-                    <select className ="AlgorithmSelect" onChange={this.selectAlgorithm}>
-                        <option value="BFS"> BFS</option>
-                        <option value="DFS"> DFS</option>
-                        <option value="Djikstra"> Djikstra </option>
-                    </select>
-                </li>
-            </ul>
-            <div className="grid">
-            {nodes.map((row, rowIdx) => {
-                return (
-                    <div key={rowIdx} className={`row-${rowIdx}`}>
-                        {row.map((node, nodeIdx) => {
-                            const {isStart, isFinish,isAnimated, row, col,isWall, isShortestPathNode} = node;
-                            return (
-                                <Node
-                                    key={nodeIdx}
-                                    isStart = {isStart}
-                                    isFinish = {isFinish}
-                                    isAnimated = {isAnimated}
-                                    isWall = {isWall}
-                                    isShortestPathNode = {isShortestPathNode}
-                                    onMouseDown={(row,col) => this.handleMouseDown(row,col)}
-                                    onMouseEnter={(row,col) => this.handleMouseEnter(row,col)}
-                                    mousePressed ={mousePressed}
-                                    onMouseUp= {() => this.handleMouseUp(row,col)}
-                                    row={row}
-                                    col={col}
-                                    instantAnimation = {alreadyVisualized}
-                                >
-                                </Node>
-                            );
-                        })}
-                </div>
-                );
-            })}
-        </div>
+                    );
+                })}
+            </div>
         </div>);
     }
 }

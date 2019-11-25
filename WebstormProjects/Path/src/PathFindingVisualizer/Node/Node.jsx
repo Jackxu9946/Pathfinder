@@ -19,6 +19,7 @@ export default class Node extends Component {
             onMouseUp,
             isShortestPathNode,
             instantAnimation,
+            onMouseOver,
         } = this.props;
         var extraClassName = isFinish ? 'node-finish':
             isStart ? 'node-start':
@@ -36,6 +37,7 @@ export default class Node extends Component {
             className={`node ${extraClassName}`}
             onMouseDown ={() => onMouseDown(row,col)}
             onMouseEnter ={() => onMouseEnter(row,col)}
+            onMouseOver = {() => onMouseOver(row,col)}
             onMouseUp = {() => onMouseUp(row,col)}>
         </div>;
     }

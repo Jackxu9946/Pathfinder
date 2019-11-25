@@ -17,7 +17,8 @@
     border-collapse: collapse;
     /*vertical-align: bottom;*/
     box-sizing: border-box;
-    margin-bottom: inherit;
+    /*margin-bottom: inherit;*/
+    padding: 0;
 }
 
 .button {
@@ -77,10 +78,10 @@
 }
 
 .AlgorithmSelect {
-    background-color: #3498DB;
+    background-color: inherit;
     color: white;
-    padding: 16px;
+    /*padding: 16px;*/
     font-size: 16px;
-    border: none;
+    border: 2px;
     cursor: pointer;
 }
