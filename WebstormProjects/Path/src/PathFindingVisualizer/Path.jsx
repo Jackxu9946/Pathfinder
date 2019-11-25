@@ -7,7 +7,7 @@ import {DFS} from "./Algorithms/DFS";
 import {Dijkstra, constructShortestPath} from "./Algorithms/Djikstra"
 import cloneDeep from 'lodash/cloneDeep'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 
 const START_NODE_ROW = 3;
 const START_NODE_COL = 5;
@@ -392,13 +392,11 @@ export default class Path extends Component {
                     Wall
                 </li>
                 <li className='iconList'>
-                    <div className='dropdown'>
-                        <select className ="AlgorithmSelect" onChange={this.selectAlgorithm}>
-                            <option value="BFS"> BFS</option>
-                            <option value="DFS"> DFS</option>
-                            <option value="Djikstra"> Djikstra </option>
-                        </select>
-                    </div>
+                    <select className ="AlgorithmSelect" onChange={this.selectAlgorithm}>
+                        <option value="BFS"> BFS</option>
+                        <option value="DFS"> DFS</option>
+                        <option value="Djikstra"> Djikstra </option>
+                    </select>
                 </li>
             </ul>
             <div className="grid">
