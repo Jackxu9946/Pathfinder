@@ -5,6 +5,7 @@ import './Path.css'
 import {BFS} from './Algorithms/BFS';
 import {DFS} from "./Algorithms/DFS";
 import {Dijkstra, constructShortestPath} from "./Algorithms/Djikstra"
+import cloneDeep from 'lodash/cloneDeep'
 
 const START_NODE_ROW = 3;
 const START_NODE_COL = 5;
@@ -12,6 +13,7 @@ const FINISH_NODE_ROW = 5;
 const FINISH_NODE_COL = 5;
 const GRID_ROW_LENGTH = 25;
 const GRID_COL_LENGTH = 60;
+const TIME_OUT_CONST = 65;
 
 export default class Path extends Component {
     constructor(prop) {
@@ -104,7 +106,9 @@ export default class Path extends Component {
             console.log("Start node instant animation");
             // console.log("Current algorithm is" + this.state.algorithm + " alreadyVisualized = " + this.state.alreadyVisualized);
             if (this.state.algorithm === "Djikstra" && this.state.alreadyVisualized) {
-                this.instantAnimationWithShortestPath();
+                setTimeout(() => {
+                    this.instantAnimationWithShortestPath();
+                }, 100)
             }
         } else if (this.state.movingEndNode) {
             // console.log("Moving End Node");
@@ -124,12 +128,13 @@ export default class Path extends Component {
             this.setState({nodes:newGrid, currentEndNode:[newNode.row, newNode.col]});
             this.clearBoard();
             console.log("end node instant animation ");
-            if (this.state.algorithm === "Djikstra" && this.state.alreadyVisualized) {
-                this.instantAnimationWithShortestPath();
-            }
+            // if (this.state.algorithm === "Djikstra" && this.state.alreadyVisualized) {
+            //     this.instantAnimationWithShortestPath();
+            // }
         }
         this.setState({mousePressed:false, movingStartNode:false, movingEndNode:false});
     }
+
 
     handleMouseEnter(row,col) {
         // console.log("MousePressed " + this.state.mousePressed);
@@ -138,6 +143,7 @@ export default class Path extends Component {
         this.setState({nodes:newGrid});
     }
 
+    // This function is used to make 'walls' in the grid
     makeNewGridWithWall(row,col) {
         const newGrid = this.state.nodes.slice();
         const currentNode = this.state.nodes[row][col];
@@ -149,6 +155,7 @@ export default class Path extends Component {
         return newGrid;
     }
 
+    // Determine if there is a path from start to end via BFS
     visualizeBFS() {
         const {nodes, currentStartNode, currentEndNode} = this.state;
         const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
@@ -157,6 +164,7 @@ export default class Path extends Component {
         this.animate(visitedNode);
     }
 
+    // Determine if there is a path from start to end via DFS
     visualizeDFS() {
         const {nodes, currentStartNode, currentEndNode} = this.state;
         const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
@@ -165,17 +173,12 @@ export default class Path extends Component {
         this.animate(visitedNode);
     }
 
+    //This function will find the shortest path from start to end via Djikstra
     visualizeDjikstra() {
         const {nodes,initialAnimationFinished,currentStartNode, currentEndNode} = this.state;
         const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
         const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
-        // console.log("StartNode "+ startNode.row + ',' + startNode.col);
-        // console.log("endNode" + endNode.row + ',' + endNode.col);
-        // console.log("Before Djisktra");
-        // console.log(nodes);
         const visitedNode = Dijkstra(nodes,startNode,endNode);
-        // console.log("After visiting with Djikstra");
-        // console.log(nodes);
         const beforeTimeStartInterval = this.animate(visitedNode) + 35;
         var shortestPath = constructShortestPath(nodes, startNode, endNode);
         if (shortestPath === "No path exist") {
@@ -183,34 +186,50 @@ export default class Path extends Component {
             return;
         }
         shortestPath = shortestPath.reverse();
-        // conso
         this.animateShortestPath(shortestPath,beforeTimeStartInterval,true);
+        const setTimeoutAgainFk = shortestPath.length + beforeTimeStartInterval;
+        setTimeout(() => {
+            this.setState({alreadyVisualized: true})
+        }, TIME_OUT_CONST * (setTimeoutAgainFk + 10))
     }
 
+    // visitedNode(List) = All of the nodes that makes the shortest path from start to end
+    // beforeTimeStartInterval(Integer) = How many nodes are visited before we found our end node
+    // shouldSetTimeout(Boolean) = determines if we should be using instant animation or not.
     animateShortestPath(visitedNode, beforeTimeStartInterval, shouldSetTimeout) {
         const newGrid = this.state.nodes.slice();
-        for (let i = 0; i < visitedNode.length; i++)
-        {
-            const node = visitedNode[i];
-            const newNode = {
-                ...node,
-                isShortestPathNode: true,
-            };
-            console.log("Before changing newGrid");
-            console.log(this.state.nodes);
-            newGrid[node.row][node.col] = newNode;
-            console.log("Changed node = [" + newNode.row + "," + newNode.col +"]" );
-            console.log("After changing newGrid");
-            console.log(this.state.nodes);
-            if (shouldSetTimeout) {
+        if (shouldSetTimeout) {
+            for (let i = 0; i < visitedNode.length; i++) {
+                const node = visitedNode[i];
+                const newNode = {
+                    ...node,
+                    isShortestPathNode: true,
+                };
+                // console.log("Before changing newGrid");
+                // console.log(this.state.nodes);
+                // console.log("Changed node = [" + newNode.row + "," + newNode.col + "]");
+                // console.log("After changing newGrid");
+                // console.log(this.state.nodes);
                 setTimeout(() => {
-                    // newGrid[node.row][node.col] = newNode;
-                    // this.setState({nodes:newGrid});
+                    newGrid[node.row][node.col] = newNode;
+                    this.setState({nodes: newGrid});
                 }, 65 * (i + beforeTimeStartInterval));
             }
-            // else if (i === visitedNode.length -1 && !shouldSetTimeout) {
-            //     this.setState({nodes:newGrid});
-            // }
+        }
+        else {
+            for (let i = 0; i < visitedNode.length; i++) {
+                const node = visitedNode[i];
+                const newNode = {
+                    ...node,
+                    isShortestPathNode: true,
+                };
+                setTimeout(() => {
+                    newGrid[node.row][node.col] = newNode;
+                    if (i === visitedNode.length -1) {
+                        this.setState({nodes:newGrid})
+                    }
+                }, 0);
+            }
         }
     }
 
@@ -237,6 +256,9 @@ export default class Path extends Component {
         const {nodes,initialAnimationFinished,currentStartNode, currentEndNode} = this.state;
         const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
         const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
+        console.log(nodes);
+        console.log("start node is " + startNode.row + "," + startNode.col);
+        console.log("end node is " + endNode.row + "," + endNode.col);
         const visitedNode = Dijkstra(nodes,startNode,endNode);
         console.log("Went through Djikstra");
         const newGrid = this.state.nodes.slice();
@@ -263,7 +285,7 @@ export default class Path extends Component {
         this.setState({nodes:newGrid});
     }
 
-    clearBoard() {
+    clearBoard(resetAlreadyVisualized) {
         const {nodes} = this.state;
         const newGrid = this.state.nodes.slice();
         for ( var row=0; row < nodes.length; row++) {
@@ -288,9 +310,12 @@ export default class Path extends Component {
                 }
             }
         }
-        // console.log("After clearing board");
+        console.log("After clearing board");
         // console.log(newGrid);
         this.setState({nodes:newGrid})
+        if (resetAlreadyVisualized) {
+            this.setState({alreadyVisualized:false})
+        }
     }
 
     clearWall() {
@@ -318,7 +343,6 @@ export default class Path extends Component {
             this.visualizeDjikstra()
             // this.instantAnimationWithShortestPath();
         }
-        // this.setState({alreadyVisualized: true})
     }
 
     selectAlgorithm(event) {
@@ -333,7 +357,7 @@ export default class Path extends Component {
             <button className="button" onClick={() => this.visualizeAlgorithm()}>
                 Visualize {algorithm}
             </button>
-            <button className="button" onClick={() => this.clearBoard()}>
+            <button className="button" onClick={() => this.clearBoard(true)}>
                 Clear Board
             </button>
                 <button className="button" onClick={() => this.clearWall()}>
