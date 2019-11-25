@@ -97,3 +97,11 @@
 .node-wall {
     background-color: black;
 }
+
+.node-shortest-path-instant-animation {
+    background-color: yellow;
+}
+
+.node-visited-instant-animation {
+    background-color: cadetblue;
+}

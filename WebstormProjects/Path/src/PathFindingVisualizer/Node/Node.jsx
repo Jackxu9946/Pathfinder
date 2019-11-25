@@ -18,13 +18,19 @@ export default class Node extends Component {
             onMouseEnter,
             onMouseUp,
             isShortestPathNode,
+            instantAnimation,
         } = this.props;
-        const extraClassName = isFinish ? 'node-finish':
+        var extraClassName = isFinish ? 'node-finish':
             isStart ? 'node-start':
             isShortestPathNode ? 'node-shortest-path':
             isAnimated ? 'node-visited':
             isWall ? 'node-wall':
             '';
+        if (instantAnimation && !isStart && !isFinish) {
+            if (extraClassName === "node-shortest-path" || extraClassName === "node-visited") {
+                extraClassName += "-instant-animation"
+            }
+        }
         return <div
             id = {`node-${row}-${col}`}
             className={`node ${extraClassName}`}

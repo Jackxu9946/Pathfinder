@@ -6,8 +6,8 @@ import {BFS} from './Algorithms/BFS';
 import {DFS} from "./Algorithms/DFS";
 import {Dijkstra, constructShortestPath} from "./Algorithms/Djikstra"
 
-const START_NODE_ROW = 0;
-const START_NODE_COL = 0;
+const START_NODE_ROW = 3;
+const START_NODE_COL = 5;
 const FINISH_NODE_ROW = 5;
 const FINISH_NODE_COL = 5;
 const GRID_ROW_LENGTH = 25;
@@ -26,6 +26,7 @@ export default class Path extends Component {
             previousEndNode: [FINISH_NODE_ROW, FINISH_NODE_COL],
             currentStartNode: [START_NODE_ROW, START_NODE_COL],
             currentEndNode: [FINISH_NODE_ROW, FINISH_NODE_COL],
+            alreadyVisualized: false,
         };
         this.selectAlgorithm = this.selectAlgorithm.bind(this);
         this.visualizeDFS = this.visualizeDFS.bind(this);
@@ -52,7 +53,8 @@ export default class Path extends Component {
                     isWall: false,
                     distance: row === currentStartNode[0] && col === currentStartNode[1] ? 0 : "infinity",
                     previous : [null,null],
-                    isShortestPathNode: false
+                    isShortestPathNode: false,
+                    instantAnimation: false
                 };
                 currentRow.push(nodeObject)
             }
@@ -98,6 +100,12 @@ export default class Path extends Component {
             newGrid[previousStartNode[0]][previousStartNode[1]] = oldNoLongerStartNode;
             this.setState({nodes:newGrid, currentStartNode: [newNode.row,newNode.col]});
             this.clearBoard();
+
+            console.log("Start node instant animation");
+            // console.log("Current algorithm is" + this.state.algorithm + " alreadyVisualized = " + this.state.alreadyVisualized);
+            if (this.state.algorithm === "Djikstra" && this.state.alreadyVisualized) {
+                this.instantAnimationWithShortestPath();
+            }
         } else if (this.state.movingEndNode) {
             // console.log("Moving End Node");
             const newGrid = this.state.nodes.slice();
@@ -115,6 +123,10 @@ export default class Path extends Component {
             newGrid[previousEndNode[0]][previousEndNode[1]] = oldNoLongerEndNode;
             this.setState({nodes:newGrid, currentEndNode:[newNode.row, newNode.col]});
             this.clearBoard();
+            console.log("end node instant animation ");
+            if (this.state.algorithm === "Djikstra" && this.state.alreadyVisualized) {
+                this.instantAnimationWithShortestPath();
+            }
         }
         this.setState({mousePressed:false, movingStartNode:false, movingEndNode:false});
     }
@@ -159,11 +171,11 @@ export default class Path extends Component {
         const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
         // console.log("StartNode "+ startNode.row + ',' + startNode.col);
         // console.log("endNode" + endNode.row + ',' + endNode.col);
-        console.log("Before Djisktra");
-        console.log(nodes);
+        // console.log("Before Djisktra");
+        // console.log(nodes);
         const visitedNode = Dijkstra(nodes,startNode,endNode);
-        console.log("After visiting with Djikstra");
-        console.log(nodes);
+        // console.log("After visiting with Djikstra");
+        // console.log(nodes);
         const beforeTimeStartInterval = this.animate(visitedNode) + 35;
         var shortestPath = constructShortestPath(nodes, startNode, endNode);
         if (shortestPath === "No path exist") {
@@ -171,22 +183,34 @@ export default class Path extends Component {
             return;
         }
         shortestPath = shortestPath.reverse();
-        this.animateShortestPath(shortestPath,beforeTimeStartInterval);
+        // conso
+        this.animateShortestPath(shortestPath,beforeTimeStartInterval,true);
     }
 
-    animateShortestPath(visitedNode, beforeTimeStartInterval) {
+    animateShortestPath(visitedNode, beforeTimeStartInterval, shouldSetTimeout) {
+        const newGrid = this.state.nodes.slice();
         for (let i = 0; i < visitedNode.length; i++)
         {
-            setTimeout(() => {
-                    const node = visitedNode[i];
-                    const newGrid = this.state.nodes.slice();
-                    const newNode = {
-                        ...node,
-                        isShortestPathNode: true,
-                    };
-                    newGrid[node.row][node.col] = newNode;
-                    this.setState({nodes: newGrid})},
-                65*(i+beforeTimeStartInterval));
+            const node = visitedNode[i];
+            const newNode = {
+                ...node,
+                isShortestPathNode: true,
+            };
+            console.log("Before changing newGrid");
+            console.log(this.state.nodes);
+            newGrid[node.row][node.col] = newNode;
+            console.log("Changed node = [" + newNode.row + "," + newNode.col +"]" );
+            console.log("After changing newGrid");
+            console.log(this.state.nodes);
+            if (shouldSetTimeout) {
+                setTimeout(() => {
+                    // newGrid[node.row][node.col] = newNode;
+                    // this.setState({nodes:newGrid});
+                }, 65 * (i + beforeTimeStartInterval));
+            }
+            // else if (i === visitedNode.length -1 && !shouldSetTimeout) {
+            //     this.setState({nodes:newGrid});
+            // }
         }
     }
 
@@ -209,37 +233,35 @@ export default class Path extends Component {
         }
     }
 
-    // instantAnimationWithShortestPath() {
-    //     const {nodes,initialAnimationFinished,currentStartNode, currentEndNode} = this.state;
-    //     const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
-    //     const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
-    //     const visitedNode = Dijkstra(nodes,startNode,endNode);
-    //     const newGrid = this.state.nodes.slice();
-    //     for (let i =0; i < visitedNode.length; i++) {
-    //         const node = visitedNode[i];
-    //         const currentFinalNode = this.state.currentEndNode;
-    //         if (node.row === currentFinalNode[0] && node.col === currentFinalNode[1]) {
-    //             return i;
-    //         }
-    //         const newNode = {
-    //             ...node,
-    //             isAnimated: true,
-    //         };
-    //         newGrid[node.row][node.col] = newNode;
-    //     }
-    //     var shortestPath = constructShortestPath(nodes, startNode, endNode);
-    //     if (shortestPath === "No path exist") {
-    //         console.log("No path exist");
-    //         return;
-    //     }
-    //     shortestPath = shortestPath.reverse();
-    //     this.animateShortestPath(shortestPath,beforeTimeStartInterval);
-    //
-    //     setTimeOut( () => {
-    //         this.setState({nodes:newGrid})
-    //     }, 45);
-    //
-    // }
+    instantAnimationWithShortestPath() {
+        const {nodes,initialAnimationFinished,currentStartNode, currentEndNode} = this.state;
+        const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
+        const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
+        const visitedNode = Dijkstra(nodes,startNode,endNode);
+        console.log("Went through Djikstra");
+        const newGrid = this.state.nodes.slice();
+        for (let i =0; i < visitedNode.length; i++) {
+            const node = visitedNode[i];
+            const currentFinalNode = this.state.currentEndNode;
+            if (node.row === currentFinalNode[0] && node.col === currentFinalNode[1]) {
+                break;
+            }
+            const newNode = {
+                ...node,
+                isAnimated: true,
+            };
+            newGrid[node.row][node.col] = newNode;
+        }
+        console.log("Before shortest path");
+        var shortestPath = constructShortestPath(nodes, startNode, endNode);
+        if (shortestPath === "No path exist") {
+            console.log("No path exist");
+            return;
+        }
+        shortestPath = shortestPath.reverse();
+        this.animateShortestPath(shortestPath,0, false);
+        this.setState({nodes:newGrid});
+    }
 
     clearBoard() {
         const {nodes} = this.state;
@@ -266,8 +288,8 @@ export default class Path extends Component {
                 }
             }
         }
-        console.log("After clearing board");
-        console.log(newGrid);
+        // console.log("After clearing board");
+        // console.log(newGrid);
         this.setState({nodes:newGrid})
     }
 
@@ -287,13 +309,16 @@ export default class Path extends Component {
 
     visualizeAlgorithm() {
         const {algorithm} = this.state;
+        this.clearBoard();
         if (algorithm === "BFS") {
             this.visualizeBFS();
         } else if (algorithm === "DFS") {
             this.visualizeDFS();
         } else if (algorithm === "Djikstra") {
             this.visualizeDjikstra()
+            // this.instantAnimationWithShortestPath();
         }
+        // this.setState({alreadyVisualized: true})
     }
 
     selectAlgorithm(event) {
@@ -302,7 +327,7 @@ export default class Path extends Component {
     }
 
     render() {
-        const {nodes, mousePressed,algorithm} = this.state;
+        const {nodes, mousePressed,algorithm, alreadyVisualized} = this.state;
         return (
             <div className ="outerContainer">
             <button className="button" onClick={() => this.visualizeAlgorithm()}>
@@ -368,6 +393,7 @@ export default class Path extends Component {
                                     onMouseUp= {() => this.handleMouseUp(row,col)}
                                     row={row}
                                     col={col}
+                                    instantAnimation = {alreadyVisualized}
                                 >
                                 </Node>
                             );
