@@ -6,13 +6,15 @@ import {BFS} from './Algorithms/BFS';
 import {DFS} from "./Algorithms/DFS";
 import {Dijkstra, constructShortestPath} from "./Algorithms/Djikstra"
 import cloneDeep from 'lodash/cloneDeep'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Button, ListGroup, ListGroupItem} from 'react-bootstrap';
 
 const START_NODE_ROW = 3;
 const START_NODE_COL = 5;
 const FINISH_NODE_ROW = 5;
 const FINISH_NODE_COL = 5;
-const GRID_ROW_LENGTH = 25;
-const GRID_COL_LENGTH = 60;
+const GRID_ROW_LENGTH = 20;
+const GRID_COL_LENGTH = 50;
 const TIME_OUT_CONST = 65;
 
 export default class Path extends Component {
@@ -354,15 +356,15 @@ export default class Path extends Component {
         const {nodes, mousePressed,algorithm, alreadyVisualized} = this.state;
         return (
             <div className ="outerContainer">
-            <button className="button" onClick={() => this.visualizeAlgorithm()}>
+            <Button className="button" onClick={() => this.visualizeAlgorithm()}>
                 Visualize {algorithm}
-            </button>
-            <button className="button" onClick={() => this.clearBoard(true)}>
+            </Button>
+            <Button className="button" onClick={() => this.clearBoard(true)}>
                 Clear Board
-            </button>
-                <button className="button" onClick={() => this.clearWall()}>
+            </Button>
+                <Button className="button" onClick={() => this.clearWall()}>
                     Clear Wall
-                </button>
+                </Button>
             <ul className="iconList">
                 <li className="iconList">
                     <div className='box startNode'>
@@ -390,11 +392,13 @@ export default class Path extends Component {
                     Wall
                 </li>
                 <li className='iconList'>
-                    <select className ="AlgorithmSelect" onChange={this.selectAlgorithm}>
-                        <option value="BFS"> BFS</option>
-                        <option value="DFS"> DFS</option>
-                        <option value="Djikstra"> Djikstra </option>
-                    </select>
+                    <div className='dropdown'>
+                        <select className ="AlgorithmSelect" onChange={this.selectAlgorithm}>
+                            <option value="BFS"> BFS</option>
+                            <option value="DFS"> DFS</option>
+                            <option value="Djikstra"> Djikstra </option>
+                        </select>
+                    </div>
                 </li>
             </ul>
             <div className="grid">

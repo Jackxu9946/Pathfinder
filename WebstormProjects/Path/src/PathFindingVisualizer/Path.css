@@ -33,7 +33,7 @@
 }
 
 .iconList {
-    display: inline-block;
+    display: inline;
     margin: 10px;
     align-items: center;
 }
