@@ -106,3 +106,7 @@
 .node-visited-instant-animation {
     background-color: cadetblue;
 }
+
+.node-weight {
+    background-color: bisque;
+}

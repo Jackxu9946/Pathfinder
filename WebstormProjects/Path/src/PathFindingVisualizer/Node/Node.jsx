@@ -20,12 +20,14 @@ export default class Node extends Component {
             isShortestPathNode,
             instantAnimation,
             onMouseOver,
+            nodeWeight,
         } = this.props;
         var extraClassName = isFinish ? 'node-finish':
             isStart ? 'node-start':
             isShortestPathNode ? 'node-shortest-path':
             isAnimated ? 'node-visited':
             isWall ? 'node-wall':
+            nodeWeight !== 1 ? 'node-weight':
             '';
         if (instantAnimation && !isStart && !isFinish) {
             if (extraClassName === "node-shortest-path" || extraClassName === "node-visited") {

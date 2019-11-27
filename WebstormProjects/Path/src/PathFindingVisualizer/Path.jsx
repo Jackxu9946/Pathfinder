@@ -8,12 +8,12 @@ import {constructShortestPath, Dijkstra} from "./Algorithms/Djikstra"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button} from 'react-bootstrap';
 
-const START_NODE_ROW = 3;
-const START_NODE_COL = 5;
-const FINISH_NODE_ROW = 5;
-const FINISH_NODE_COL = 5;
-const GRID_ROW_LENGTH = 20;
-const GRID_COL_LENGTH = 50;
+const START_NODE_ROW = 0;
+const START_NODE_COL = 0;
+const FINISH_NODE_ROW = 3;
+const FINISH_NODE_COL = 0;
+const GRID_ROW_LENGTH = 6;
+const GRID_COL_LENGTH = 10;
 const TIME_OUT_CONST = 65;
 
 export default class Path extends Component {
@@ -36,6 +36,11 @@ export default class Path extends Component {
         this.selectAlgorithm = this.selectAlgorithm.bind(this);
         this.visualizeDFS = this.visualizeDFS.bind(this);
         this.visualizeBFS = this.visualizeBFS.bind(this);
+        this.setAddingWeight = this.setAddingWeight.bind(this);
+    }
+
+    setAddingWeight() {
+        this.setState({addingWeight:!this.state.addingWeight});
     }
 
     componentDidMount() {
@@ -165,7 +170,7 @@ export default class Path extends Component {
         if (!currentNode.isWall) {
             const newNode = {
                 ...currentNode,
-                nodeWeight: 2
+                nodeWeight: currentNode.nodeWeight === 1 ? 10: 1
             };
             newGrid[row][col] = newNode;
         }
@@ -381,7 +386,11 @@ export default class Path extends Component {
     }
 
     render() {
-        const {nodes, mousePressed,algorithm, alreadyVisualized} = this.state;
+        const {nodes, mousePressed,algorithm, alreadyVisualized, addingWeight} = this.state;
+        var message = "Add weight";
+        if (addingWeight) {
+            message = "Stop adding weight";
+        }
         return (
             <div className ="outerContainer">
                 <Button className="button" onClick={() => this.visualizeAlgorithm()}>
@@ -392,6 +401,9 @@ export default class Path extends Component {
                 </Button>
                 <Button className="button" onClick={() => this.clearWall()}>
                     Clear Wall
+                </Button>
+                <Button className="button" onClick={() => this.setAddingWeight()}>
+                    {message}
                 </Button>
                 <Button>
                     <div className ="dropdown">

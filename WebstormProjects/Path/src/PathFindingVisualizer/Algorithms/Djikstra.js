@@ -15,12 +15,15 @@ export function Dijkstra(grid, startNode, endNode) {
             const currentRow = currentNode['row'];
             const currentCol = currentNode['col'];
             const currentDistance = currentNode['distance'];
-            var nextDistance = currentDistance + currentNode['nodeWeight'];
+            // var nextDistance = currentDistance + currentNode['nodeWeight'];
             if (currentNode['isTop'] === false) {
                 const aboveNode = grid[currentRow - 1][currentCol];
-                if (aboveNode['isVisited'] === false && !aboveNode['isWall']) {
-                    queueOfVisited.push(aboveNode);
+                if (!aboveNode['isWall']) {
+                    if (aboveNode['isVisited'] === false) {
+                        queueOfVisited.push(aboveNode);
+                    }
                     const aboveNodeDistance = aboveNode['distance'];
+                    const nextDistance = currentDistance + aboveNode['nodeWeight'];
                     if (aboveNodeDistance === "infinity" || nextDistance < aboveNodeDistance) {
                         aboveNode['distance'] = nextDistance;
                         aboveNode['previous'] = [currentRow, currentCol];
@@ -29,9 +32,12 @@ export function Dijkstra(grid, startNode, endNode) {
             }
             if (currentNode['isBottom'] === false) {
                 const belowNode = grid[currentRow + 1][currentCol];
-                if (belowNode['isVisited'] === false && !belowNode['isWall']) {
-                    queueOfVisited.push(belowNode);
+                if (!belowNode['isWall']) {
+                    if (belowNode['isVisited'] === false) {
+                        queueOfVisited.push(belowNode);
+                    }
                     const belowNodeDistance = belowNode['distance'];
+                    const nextDistance = currentDistance + belowNode['nodeWeight'];
                     if (belowNodeDistance === "infinity" || nextDistance < belowNodeDistance) {
                         belowNode['distance'] = nextDistance;
                         belowNode['previous'] = [currentRow, currentCol];
@@ -40,9 +46,12 @@ export function Dijkstra(grid, startNode, endNode) {
             }
             if (currentNode['isLeft'] === false) {
                 const leftNode = grid[currentRow][currentCol - 1];
-                if (leftNode['isVisited'] === false && !leftNode['isWall']) {
-                    queueOfVisited.push(leftNode);
+                if (!leftNode['isWall']) {
+                    if (leftNode['isVisited'] === false) {
+                        queueOfVisited.push(leftNode);
+                    }
                     const leftNodeDistance = leftNode['distance'];
+                    const nextDistance = currentDistance + leftNode['nodeWeight'];
                     if (leftNodeDistance === "infinity" || nextDistance < leftNodeDistance) {
                         leftNode['distance'] = nextDistance;
                         leftNode['previous'] = [currentRow, currentCol];
@@ -51,9 +60,12 @@ export function Dijkstra(grid, startNode, endNode) {
             }
             if (currentNode['isRight'] === false) {
                 const rightNode = grid[currentRow][currentCol + 1];
-                if (rightNode['isVisited'] === false && !rightNode['isWall']) {
-                    queueOfVisited.push(rightNode);
+                if (!rightNode['isWall']) {
+                    if (rightNode['isVisited'] === false) {
+                        queueOfVisited.push(rightNode);
+                    }
                     const rightNodeDistance = rightNode['distance'];
+                    const nextDistance = currentDistance + rightNode['nodeWeight'];
                     if (rightNodeDistance === "infinity" || nextDistance < rightNodeDistance) {
                         rightNode['distance'] = nextDistance;
                         rightNode['previous'] = [currentRow, currentCol];
