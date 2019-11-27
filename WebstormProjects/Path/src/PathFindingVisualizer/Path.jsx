@@ -61,7 +61,7 @@ export default class Path extends Component {
                     isVisited: false,
                     isAnimated: false,
                     isWall: false,
-                    distance: row === currentStartNode[0] && col === currentStartNode[1] ? 0 : "infinity",
+                    distance: row === currentStartNode[0] && col === currentStartNode[1] ? 0 : 99999999,
                     previous : [null,null],
                     isShortestPathNode: false,
                     instantAnimation: false,
@@ -108,7 +108,7 @@ export default class Path extends Component {
             const oldNoLongerStartNode = {
                 ...oldStartNode,
                 isStart: false,
-                distance: "infinity",
+                distance: 99999999,
             };
             newGrid[row][col] = newNode;
             newGrid[previousStartNode[0]][previousStartNode[1]] = oldNoLongerStartNode;
@@ -339,7 +339,7 @@ export default class Path extends Component {
                         currentNode['isAnimated'] = false;
                         currentNode['isVisited'] = false;
                         currentNode['isShortestPathNode'] = false;
-                        currentNode['distance'] = "infinity";
+                        currentNode['distance'] = 99999999;
                         newGrid[row][col] = currentNode
                     }
                 }
