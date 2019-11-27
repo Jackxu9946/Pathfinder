@@ -384,11 +384,11 @@ export default class Path extends Component {
     }
 
     selectSpeed(event) {
-        if (event.target.value === "KOBE") {
+        if (event.target.value === "Fast") {
             TIME_OUT_CONST = 20;
-        } else if (event.target.value === "Speedy Gonzales") {
+        } else if (event.target.value === "Average") {
             TIME_OUT_CONST = 50;
-        } else if (event.target.value === "Overweight Shaq") {
+        } else if (event.target.value === "Slow") {
             TIME_OUT_CONST = 100;
         }
     }
@@ -432,9 +432,9 @@ export default class Path extends Component {
                     <div className ="dropdown">
                         Speed:
                         <select className = "AlgorithmSelect" onChange = {this.selectSpeed} >
-                            <option value="Speedy Gonzales"> Speedy Gonzales </option>
-                            <option value="Overweight Shaq"> Overweight Shat </option>
-                            <option value="KOBE"> KOBE </option>
+                            <option value="Fast"> Fast </option>
+                            <option value="Slow"> Slow </option>
+                            <option value="Average"> Average </option>
                         </select>
                     </div>
                 </Button>
