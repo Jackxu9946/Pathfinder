@@ -14,7 +14,7 @@ const FINISH_NODE_ROW = 3;
 const FINISH_NODE_COL = 0;
 const GRID_ROW_LENGTH = 25;
 const GRID_COL_LENGTH = 50;
-const TIME_OUT_CONST = 65;
+var TIME_OUT_CONST = 25;
 
 export default class Path extends Component {
     constructor(prop) {
@@ -383,10 +383,21 @@ export default class Path extends Component {
         }
     }
 
+    selectSpeed(event) {
+        if (event.target.value === "KOBE") {
+            TIME_OUT_CONST = 20;
+        } else if (event.target.value === "Speedy Gonzales") {
+            TIME_OUT_CONST = 50;
+        } else if (event.target.value === "Overweight Shaq") {
+            TIME_OUT_CONST = 100;
+        }
+    }
+
     selectAlgorithm(event) {
         this.setState({algorithm: event.target.value});
         this.clearBoard();
     }
+
 
     render() {
         const {nodes, mousePressed,algorithm, alreadyVisualized, addingWeight} = this.state;
@@ -414,6 +425,16 @@ export default class Path extends Component {
                             <option value="BFS"> BFS</option>
                             <option value="DFS"> DFS</option>
                             <option value="Djikstra"> Djikstra </option>
+                        </select>
+                    </div>
+                </Button>
+                <Button>
+                    <div className ="dropdown">
+                        Speed:
+                        <select className = "AlgorithmSelect" onChange = {this.selectSpeed} >
+                            <option value="Speedy Gonzales"> Speedy Gonzales </option>
+                            <option value="Overweight Shaq"> Overweight Shat </option>
+                            <option value="KOBE"> KOBE </option>
                         </select>
                     </div>
                 </Button>
