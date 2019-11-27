@@ -24,6 +24,11 @@ export function Dijkstra(grid, startNode, endNode) {
                     }
                     const aboveNodeDistance = aboveNode['distance'];
                     const nextDistance = currentDistance + aboveNode['nodeWeight'];
+                    if (currentNode['row'] === 5 && currentNode['col'] === 3) {
+                        console.log("Above node weight is " + aboveNode['nodeWeight']);
+                        console.log("From current to above node is " + nextDistance);
+                        console.log("Top node current distance is " + aboveNodeDistance);
+                    }
                     if (aboveNodeDistance === "infinity" || nextDistance < aboveNodeDistance) {
                         aboveNode['distance'] = nextDistance;
                         aboveNode['previous'] = [currentRow, currentCol];
@@ -83,6 +88,40 @@ export function constructShortestPath(grid,StartNode,endNode) {
     const startCol = StartNode['col'];
     var currentNode = endNode;
     var visitedStack = [];
+    const currentRow = endNode['row'];
+    const currentCol = endNode['col'];
+    if (!endNode['isTop']) {
+        const topNode = grid[currentRow - 1][currentCol];
+        const topNodeDistancePlusOne = topNode['distance'] + 1;
+        if (topNodeDistancePlusOne < endNode['distance']) {
+            endNode['distance'] = topNodeDistancePlusOne;
+            endNode['previous'] = [topNode['row'], topNode['col']];
+        }
+    }
+    if (!endNode['isBottom']) {
+        const bottomNode = grid[currentRow + 1][currentCol];
+        const bottomNodeDistancePlusOne = bottomNode['distance'] + 1;
+        if (bottomNodeDistancePlusOne < endNode['distance']) {
+            endNode['distance'] = bottomNodeDistancePlusOne;
+            endNode['previous'] = [bottomNode['row'], bottomNode['col']];
+        }
+    }
+    if (!endNode['isLeft']){
+        const leftNode = grid[currentRow][currentCol - 1];
+        const leftNodeDistancePlusOne = leftNode['distance'] + 1;
+        if (leftNodeDistancePlusOne < endNode['distance']) {
+            endNode['distance'] = leftNodeDistancePlusOne;
+            endNode['previous'] = [leftNode['row'], leftNode['col']];
+        }
+    }
+    if (!endNode['isRight']) {
+        const rightNode = grid[currentRow][currentCol + 1];
+        const rightNodeDistancePlusOne = rightNode['distance'] + 1;
+        if (rightNodeDistancePlusOne < endNode['distance']) {
+            endNode['distance'] = rightNodeDistancePlusOne;
+            endNode['previous'] = [rightNode['row'], rightNode['col']];
+        }
+    }
     while (currentNode != null) {
         if (currentNode['distance'] === "infinity") {
             return "No path exist";

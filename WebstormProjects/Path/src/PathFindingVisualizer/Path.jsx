@@ -12,8 +12,8 @@ const START_NODE_ROW = 0;
 const START_NODE_COL = 0;
 const FINISH_NODE_ROW = 3;
 const FINISH_NODE_COL = 0;
-const GRID_ROW_LENGTH = 6;
-const GRID_COL_LENGTH = 10;
+const GRID_ROW_LENGTH = 25;
+const GRID_COL_LENGTH = 50;
 const TIME_OUT_CONST = 65;
 
 export default class Path extends Component {
@@ -263,16 +263,18 @@ export default class Path extends Component {
                 }, (i+20)*TIME_OUT_CONST);
                 return i;
             }
-            setTimeout(() => {
-                    const newGrid = this.state.nodes.slice();
-                    const newNode = {
-                        ...node,
-                        isAnimated: true,
-                    };
-                    // console.log(i);
-                    newGrid[node.row][node.col] = newNode;
-                    this.setState({nodes: newGrid})},
-                TIME_OUT_CONST*i);
+            if (node['nodeWeight'] === 1) {
+                setTimeout(() => {
+                        const newGrid = this.state.nodes.slice();
+                        const newNode = {
+                            ...node,
+                            isAnimated: true,
+                        };
+                        newGrid[node.row][node.col] = newNode;
+                        this.setState({nodes: newGrid})
+                    },
+                    TIME_OUT_CONST * i);
+            }
         }
 
     }
@@ -360,6 +362,7 @@ export default class Path extends Component {
                 for (var col = 0; col < column.length; col++) {
                     var currentNode = column[col];
                     currentNode['isWall'] = false;
+                    currentNode['nodeWeight'] = 1;
                 }
             }
             this.setState({nodes: newGrid})
