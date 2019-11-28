@@ -12,7 +12,7 @@ const START_NODE_ROW = 0;
 const START_NODE_COL = 0;
 const FINISH_NODE_ROW = 3;
 const FINISH_NODE_COL = 0;
-const GRID_ROW_LENGTH = 25;
+const GRID_ROW_LENGTH = 20;
 const GRID_COL_LENGTH = 50;
 var TIME_OUT_CONST = 25;
 
@@ -407,64 +407,68 @@ export default class Path extends Component {
         }
         return (
             <div className ="outerContainer">
-                <Button className="button" onClick={() => this.visualizeAlgorithm()}>
-                    Visualize {algorithm}
-                </Button>
-                <Button className="button" onClick={() => this.clearBoard(true)}>
-                    Clear Board
-                </Button>
-                <Button className="button" onClick={() => this.clearWall()}>
-                    Clear Wall
-                </Button>
-                <Button className="button" onClick={() => this.setAddingWeight()}>
-                    {message}
-                </Button>
-                <Button>
-                    <div className ="dropdown">
-                        <select className ="AlgorithmSelect" onChange={this.selectAlgorithm}>
-                            <option value="BFS"> BFS</option>
-                            <option value="DFS"> DFS</option>
-                            <option value="Djikstra"> Djikstra </option>
-                        </select>
-                    </div>
-                </Button>
-                <Button>
-                    <div className ="dropdown">
-                        Speed:
-                        <select className = "AlgorithmSelect" onChange = {this.selectSpeed} >
-                            <option value="Fast"> Fast </option>
-                            <option value="Slow"> Slow </option>
-                            <option value="Average"> Average </option>
-                        </select>
-                    </div>
-                </Button>
-                <ul className="iconList">
-                    <li className="iconList">
-                        <div className='box startNode'>
+                <nav className="navbar navbar-expand-lg navbar-light bg-light navCenter">
+                    <Button className="btn button" onClick={() => this.visualizeAlgorithm()}>
+                        Visualize {algorithm}
+                    </Button>
+                    <Button className="btn button" onClick={() => this.clearBoard(true)}>
+                        Clear Board
+                    </Button>
+                    <Button className="btn button" onClick={() => this.clearWall()}>
+                        Clear Wall
+                    </Button>
+                    <Button className="btn button" onClick={() => this.setAddingWeight()}>
+                        {message}
+                    </Button>
+                    <Button>
+                        <div className ="dropdown">
+                            <select className ="AlgorithmSelect" onChange={this.selectAlgorithm}>
+                                <option value="BFS"> BFS</option>
+                                <option value="DFS"> DFS</option>
+                                <option value="Djikstra"> Djikstra </option>
+                            </select>
                         </div>
-                        Start Node
-                    </li>
-                    <li className="iconList">
-                        <div className='box endNode'>
+                    </Button>
+                    <Button>
+                        <div className ="dropdown">
+                            Speed:
+                            <select className = "AlgorithmSelect" onChange = {this.selectSpeed} >
+                                <option value="Fast"> Fast </option>
+                                <option value="Slow"> Slow </option>
+                                <option value="Average"> Average </option>
+                            </select>
                         </div>
-                        End Node
-                    </li>
-                    <li className="iconList">
-                        <div className='box'>
-                        </div>
-                        Unvisited Node
-                    </li>
-                    <li className="iconList">
-                        <div className='box visitedNode'>
-                        </div>
-                        Visited Node
-                    </li>
-                    <li className="iconList">
-                        <div className='box Wall'>
-                        </div>
-                        Wall
-                    </li>
-                </ul>
+                    </Button>
+                </nav>
+                <div className = "iconListDiv">
+                    <ul className="iconList">
+                        <li className="iconList">
+                            <div className='box startNode'>
+                            </div>
+                            Start Node
+                        </li>
+                        <li className="iconList">
+                            <div className='box endNode'>
+                            </div>
+                            End Node
+                        </li>
+                        <li className="iconList">
+                            <div className='box'>
+                            </div>
+                            Unvisited Node
+                        </li>
+                        <li className="iconList">
+                            <div className='box visitedNode'>
+                            </div>
+                            Visited Node
+                        </li>
+                        <li className="iconList">
+                            <div className='box Wall'>
+                            </div>
+                            Wall
+                        </li>
+                    </ul>
+                </div>
                 <div className="grid">
                 {nodes.map((row, rowIdx) => {
                     return (
