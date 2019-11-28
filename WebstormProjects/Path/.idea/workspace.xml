@@ -28,8 +28,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Path.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="178" column="9" lean-forward="true" selection-start-line="178" selection-start-column="9" selection-end-line="178" selection-end-column="9" />
+            <state relative-caret-position="735">
+              <caret line="204" column="48" selection-start-line="204" selection-start-column="48" selection-end-line="204" selection-end-column="48" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -38,10 +38,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Path.css">
+        <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Node/Node.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="35" column="13" selection-start-line="35" selection-start-column="1" selection-end-line="35" selection-end-column="13" />
+            <state relative-caret-position="209">
+              <caret line="32" column="91" selection-start-line="32" selection-start-column="91" selection-end-line="32" selection-end-column="91" />
+              <folding>
+                <element signature="e#0#39#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Node/Node.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="338">
+              <caret line="112" selection-start-line="112" selection-end-line="112" />
             </state>
           </provider>
         </entry>
@@ -57,10 +69,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>instantANimationWithShortestPath</find>
-      <find>alreadyVisualized</find>
-      <find>start node</find>
-      <find>instany</find>
       <find>ListGroup</find>
       <find>row</find>
       <find>onMouseDown</find>
@@ -87,6 +95,10 @@
       <find>makeNewGridWIthWall</find>
       <find>Djikstra</find>
       <find>selectAlgorithm</find>
+      <find>instantAnimat</find>
+      <find>instantAnimationNon</find>
+      <find>instantAnimation</find>
+      <find>alreadyvisualized</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -98,11 +110,11 @@
         <option value="$PROJECT_DIR$/src/PathFindingVisualizer/Algorithms/DFS.js" />
         <option value="$PROJECT_DIR$/src/PathFindingVisualizer/Algorithms/Dijkstra.js" />
         <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/src/PathFindingVisualizer/Node/Node.css" />
         <option value="$PROJECT_DIR$/src/PathFindingVisualizer/Node/Node.jsx" />
         <option value="$PROJECT_DIR$/src/PathFindingVisualizer/Algorithms/Djikstra.js" />
         <option value="$PROJECT_DIR$/src/index.js" />
         <option value="$PROJECT_DIR$/src/PathFindingVisualizer/Path.css" />
+        <option value="$PROJECT_DIR$/src/PathFindingVisualizer/Node/Node.css" />
         <option value="$PROJECT_DIR$/src/PathFindingVisualizer/Path.jsx" />
       </list>
     </option>
@@ -135,6 +147,13 @@
               <item name="Path" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="PathFindingVisualizer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PathfindingVisualizer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Path" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="PathFindingVisualizer" type="462c0819:PsiDirectoryNode" />
+              <item name="Node" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -216,12 +235,12 @@
       <workItem from="1574558222058" duration="2058000" />
       <workItem from="1574705325722" duration="11233000" />
       <workItem from="1574794496225" duration="21213000" />
-      <workItem from="1574880219896" duration="11531000" />
+      <workItem from="1574880219896" duration="13033000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="119808000" />
+    <option name="totallyTimeSpent" value="121310000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -236,7 +255,7 @@
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15455747" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15455747" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -251,7 +270,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32956153" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32956153" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -329,23 +348,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Node/Node.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="27" column="40" selection-start-line="27" selection-start-column="40" selection-end-line="27" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Node/Node.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1870">
-          <caret line="110" column="29" selection-start-line="110" selection-start-column="29" selection-end-line="110" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Algorithms/DFS.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -404,10 +406,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Node/Node.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="112" selection-start-line="112" selection-end-line="112" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Node/Node.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="32" column="91" selection-start-line="32" selection-start-column="91" selection-end-line="32" selection-end-column="91" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/PathFindingVisualizer/Path.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="178" column="9" lean-forward="true" selection-start-line="178" selection-start-column="9" selection-end-line="178" selection-end-column="9" />
+        <state relative-caret-position="735">
+          <caret line="204" column="48" selection-start-line="204" selection-start-column="48" selection-end-line="204" selection-end-column="48" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>

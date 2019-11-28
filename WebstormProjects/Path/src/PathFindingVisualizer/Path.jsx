@@ -37,6 +37,7 @@ export default class Path extends Component {
         this.visualizeDFS = this.visualizeDFS.bind(this);
         this.visualizeBFS = this.visualizeBFS.bind(this);
         this.setAddingWeight = this.setAddingWeight.bind(this);
+        this.instantNonAnimation = this.instantNonAnimation.bind(this);
     }
 
     setAddingWeight() {
@@ -122,6 +123,8 @@ export default class Path extends Component {
                     // this.clearBoard();
                     this.instantAnimationWithShortestPath();
                 }, 0)
+            } else if (this.state.algorithm === "DFS" || this.state.algorithm === "BFS") {
+                this.instantNonAnimation();
             }
         } else if (this.state.movingEndNode) {
             // console.log("Moving End Node");
@@ -146,6 +149,8 @@ export default class Path extends Component {
                     // this.clearBoard();
                     this.instantAnimationWithShortestPath();
                 }, 0)
+            } else if (this.state.algorithm === "DFS" || this.state.algorithm === "BFS") {
+                this.instantNonAnimation();
             }
         }
     }
@@ -198,6 +203,10 @@ export default class Path extends Component {
         const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
         const visitedNode = BFS(nodes, startNode, endNode);
         this.animate(visitedNode);
+        setTimeout( () => {
+            this.setState({alreadyVisualized:true});
+        }, TIME_OUT_CONST * (visitedNode.length + 10)
+        )
     }
 
     // Determine if there is a path from start to end via DFS
@@ -207,6 +216,10 @@ export default class Path extends Component {
         const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
         const visitedNode = DFS(nodes, startNode, endNode);
         this.animate(visitedNode);
+        setTimeout( () => {
+            this.setState({alreadyVisualized:true});
+        }, TIME_OUT_CONST * (visitedNode.length + 10)
+        )
     }
 
     //This function will find the shortest path from start to end via Djikstra
@@ -253,6 +266,31 @@ export default class Path extends Component {
         }
     }
 
+    instantNonAnimation() {
+        const {nodes, currentStartNode, currentEndNode} = this.state;
+        const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
+        const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
+        let visitedNode;
+        if (this.state.algorithm === "BFS") {
+            visitedNode = BFS(nodes, startNode, endNode);
+        } else if (this.state.algorithm === "DFS") {
+            visitedNode = DFS(nodes, startNode, endNode);
+        }
+        const newGrid = this.state.nodes.slice();
+        for (let i =0; i < visitedNode.length; i++) {
+            const node = visitedNode[i];
+            const currentFinalNode = this.state.currentEndNode;
+            if (node['nodeWeight'] === 1) {
+                const newNode = {
+                    ...node,
+                    isAnimated: true,
+                };
+                newGrid[node.row][node.col] = newNode;
+            }
+        }
+        this.setState({nodes:newGrid});
+    }
+
     animate(visitedNode) {
         this.setState({inAnimation:true});
         // console.log(visitedNode.length);
@@ -278,18 +316,13 @@ export default class Path extends Component {
                     TIME_OUT_CONST * i);
             }
         }
-
     }
 
     instantAnimationWithShortestPath() {
         const {nodes,initialAnimationFinished,currentStartNode, currentEndNode} = this.state;
         const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
         const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
-        // console.log(nodes);
-        // console.log("start node is " + startNode.row + "," + startNode.col);
-        // console.log("end node is " + endNode.row + "," + endNode.col);
         const visitedNode = Dijkstra(nodes,startNode,endNode);
-        // console.log("Went through Djikstra");
         const newGrid = this.state.nodes.slice();
         for (let i =0; i < visitedNode.length; i++) {
             const node = visitedNode[i];
