@@ -159,8 +159,10 @@ export default class Path extends Component {
             this.setState({nodes:newGrid});
         }
         else {
-            const newGrid = this.makeNewGridWithWeight(row, col);
-            this.setState({nodes:newGrid});
+            if (this.state.algorithm === "Djikstra") {
+                const newGrid = this.makeNewGridWithWeight(row, col);
+                this.setState({nodes: newGrid});
+            }
         }
     }
 
@@ -407,7 +409,7 @@ export default class Path extends Component {
         }
         return (
             <div className ="outerContainer">
-                <nav className="navbar navbar-expand-lg navbar-light bg-light navCenter">
+                <nav className="navbar navbar-expand-lg navbar-light bg-light centerNavbar">
                     <Button className="btn button" onClick={() => this.visualizeAlgorithm()}>
                         Visualize {algorithm}
                     </Button>
