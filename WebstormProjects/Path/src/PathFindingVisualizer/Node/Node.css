@@ -1,6 +1,6 @@
 .node {
     /*height: auto;*/
-    width: 1.33333%;
+    width: calc(100%/70);
     /*min-width: 1px;*/
     /*min-height: 20px;*/
     /*max-width: 25px;*/

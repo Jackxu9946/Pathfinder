@@ -15,7 +15,7 @@ const START_NODE_COL = 0;
 const FINISH_NODE_ROW = 3;
 const FINISH_NODE_COL = 0;
 const GRID_ROW_LENGTH = 23;
-const GRID_COL_LENGTH = 75;
+const GRID_COL_LENGTH = 70;
 var TIME_OUT_CONST = 25;
 
 export default class Path extends Component {
