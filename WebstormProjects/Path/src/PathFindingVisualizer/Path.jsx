@@ -16,6 +16,8 @@ const FINISH_NODE_ROW = 3;
 const FINISH_NODE_COL = 0;
 const GRID_ROW_LENGTH = 30;
 const GRID_COL_LENGTH = 60;
+// const GRID_ROW_LENGTH = 10;
+// const GRID_COL_LENGTH = 10;
 var TIME_OUT_CONST = 25;
 
 export default class Path extends Component {
@@ -440,6 +442,7 @@ export default class Path extends Component {
     visualizeAlgorithm() {
         const {algorithm} = this.state;
         this.clearBoard();
+        // this.setState({alreadyVisualized:false});
         if (algorithm === "BFS") {
             this.visualizeBFS();
         } else if (algorithm === "DFS") {

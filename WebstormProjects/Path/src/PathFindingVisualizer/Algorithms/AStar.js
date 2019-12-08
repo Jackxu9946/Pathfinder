@@ -37,7 +37,7 @@ export function AStar(grid, startNode, endNode) {
                         }
                         // g = toTopNodeDistance
                         // h = manhattanDistanceHeuristic
-                        const estimatedCostToEnd = manhattanDistanceHeuristic(aboveNode, endNode)
+                        const estimatedCostToEnd = manhattanDistanceHeuristic(aboveNode, endNode);
                         if (estimatedCostToEnd < aboveNode['distanceSum']) {
                             aboveNode['distanceSum'] = estimatedCostToEnd;
                         }
@@ -53,7 +53,7 @@ export function AStar(grid, startNode, endNode) {
                             bottomNode['distance'] = toBottomNodeDistance;
                             bottomNode['previous'] = [currentRow, currentCol];
                         }
-                        const estimatedCostToEnd = manhattanDistanceHeuristic(bottomNode, endNode)
+                        const estimatedCostToEnd = manhattanDistanceHeuristic(bottomNode, endNode);
                         if (estimatedCostToEnd < bottomNode['distanceSum']) {
                             bottomNode['distanceSum'] = estimatedCostToEnd;
                         }
@@ -70,7 +70,7 @@ export function AStar(grid, startNode, endNode) {
                             leftNode['previous'] = [currentRow, currentCol];
                         }
                     }
-                    const estimatedCostToEnd = manhattanDistanceHeuristic(leftNode, endNode)
+                    const estimatedCostToEnd = manhattanDistanceHeuristic(leftNode, endNode);
                     if (estimatedCostToEnd < leftNode['distanceSum']) {
                         leftNode['distanceSum'] = estimatedCostToEnd;
                     }
@@ -86,7 +86,7 @@ export function AStar(grid, startNode, endNode) {
                             rightNode['previous'] = [currentRow, currentCol];
                         }
                     }
-                    const estimatedCostToEnd = manhattanDistanceHeuristic(rightNode, endNode)
+                    const estimatedCostToEnd = manhattanDistanceHeuristic(rightNode, endNode);
                     if (estimatedCostToEnd < rightNode['distanceSum']) {
                         rightNode['distanceSum'] = estimatedCostToEnd;
                     }
