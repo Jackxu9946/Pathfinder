@@ -14,8 +14,8 @@ const START_NODE_ROW = 0;
 const START_NODE_COL = 0;
 const FINISH_NODE_ROW = 3;
 const FINISH_NODE_COL = 0;
-const GRID_ROW_LENGTH = 20;
-const GRID_COL_LENGTH = 50;
+const GRID_ROW_LENGTH = 23;
+const GRID_COL_LENGTH = 75;
 var TIME_OUT_CONST = 25;
 
 export default class Path extends Component {
@@ -230,8 +230,8 @@ export default class Path extends Component {
         const {nodes,initialAnimationFinished,currentStartNode, currentEndNode} = this.state;
         const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
         const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
-        // const visitedNode = Dijkstra(nodes,startNode,endNode);
-        const visitedNode = AStar(nodes, startNode, endNode);
+        const visitedNode = Dijkstra(nodes,startNode,endNode);
+        // const visitedNode = AStar(nodes, startNode, endNode);
         const beforeTimeStartInterval = this.animate(visitedNode) + 35;
         this.setState({inAnimation: true});
         var shortestPath = constructShortestPath(nodes, startNode, endNode);
