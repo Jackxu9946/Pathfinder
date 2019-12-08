@@ -5,8 +5,10 @@ import './Path.css'
 import {BFS} from './Algorithms/BFS';
 import {DFS} from "./Algorithms/DFS";
 import {constructShortestPath, Dijkstra} from "./Algorithms/Djikstra"
+import {AStar} from "./Algorithms/AStar";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button} from 'react-bootstrap';
+
 
 const START_NODE_ROW = 0;
 const START_NODE_COL = 0;
@@ -67,6 +69,7 @@ export default class Path extends Component {
                     isShortestPathNode: false,
                     instantAnimation: false,
                     nodeWeight: 1,
+                    distanceSum: row === currentStartNode[0] && col === currentStartNode[1] ? 0 : 99999999,
                 };
                 currentRow.push(nodeObject)
             }
@@ -118,12 +121,12 @@ export default class Path extends Component {
 
             // console.log("Start node instant animation");
             // console.log("Current algorithm is" + this.state.algorithm + " alreadyVisualized = " + this.state.alreadyVisualized);
-            if (this.state.algorithm === "Djikstra" && this.state.alreadyVisualized) {
+            if ((this.state.algorithm === "Djikstra" || this.state.algorithm === "AStar") && this.state.alreadyVisualized) {
                 setTimeout(() => {
                     // this.clearBoard();
                     this.instantAnimationWithShortestPath();
                 }, 0)
-            } else if (this.state.algorithm === "DFS" || this.state.algorithm === "BFS") {
+            } else if ((this.state.algorithm === "DFS" || this.state.algorithm === "BFS") && this.state.alreadyVisualized) {
                 this.instantNonAnimation();
             }
         } else if (this.state.movingEndNode) {
@@ -144,12 +147,12 @@ export default class Path extends Component {
             this.setState({nodes:newGrid, currentEndNode:[newNode.row, newNode.col], previousEndNode: [newNode.row, newNode.col]});
             this.clearBoard();
             // console.log("end node instant animation ");
-            if (this.state.algorithm === "Djikstra" && this.state.alreadyVisualized) {
+            if ((this.state.algorithm === "Djikstra" || this.state.algorithm === "AStar") && this.state.alreadyVisualized) {
                 setTimeout(() => {
                     // this.clearBoard();
                     this.instantAnimationWithShortestPath();
                 }, 0)
-            } else if (this.state.algorithm === "DFS" || this.state.algorithm === "BFS") {
+            } else if ((this.state.algorithm === "DFS" || this.state.algorithm === "BFS") && this.state.alreadyVisualized) {
                 this.instantNonAnimation();
             }
         }
@@ -227,7 +230,29 @@ export default class Path extends Component {
         const {nodes,initialAnimationFinished,currentStartNode, currentEndNode} = this.state;
         const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
         const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
-        const visitedNode = Dijkstra(nodes,startNode,endNode);
+        // const visitedNode = Dijkstra(nodes,startNode,endNode);
+        const visitedNode = AStar(nodes, startNode, endNode);
+        const beforeTimeStartInterval = this.animate(visitedNode) + 35;
+        this.setState({inAnimation: true});
+        var shortestPath = constructShortestPath(nodes, startNode, endNode);
+        if (shortestPath === "No path exist") {
+            console.log("No path exist");
+            return;
+        }
+        shortestPath = shortestPath.reverse();
+        console.log(nodes);
+        this.animateShortestPath(shortestPath,beforeTimeStartInterval,true);
+        const setTimeoutAgainFk = shortestPath.length + beforeTimeStartInterval;
+        setTimeout(() => {
+            this.setState({alreadyVisualized: true, inAnimation:false})
+        }, TIME_OUT_CONST * (setTimeoutAgainFk + 10))
+    }
+
+    visualizeAStar() {
+        const {nodes,initialAnimationFinished,currentStartNode, currentEndNode} = this.state;
+        const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
+        const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
+        const visitedNode = AStar(nodes, startNode, endNode);
         const beforeTimeStartInterval = this.animate(visitedNode) + 35;
         this.setState({inAnimation: true});
         var shortestPath = constructShortestPath(nodes, startNode, endNode);
@@ -319,10 +344,15 @@ export default class Path extends Component {
     }
 
     instantAnimationWithShortestPath() {
-        const {nodes,initialAnimationFinished,currentStartNode, currentEndNode} = this.state;
+        const {nodes,initialAnimationFinished,currentStartNode, currentEndNode, algorithm} = this.state;
         const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
         const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
-        const visitedNode = Dijkstra(nodes,startNode,endNode);
+        var visitedNode
+        if (algorithm === "Djikstra") {
+            visitedNode = Dijkstra(nodes, startNode, endNode);
+        } else if (algorithm ==="AStar") {
+            visitedNode = AStar(nodes,startNode, endNode);
+        }
         const newGrid = this.state.nodes.slice();
         for (let i =0; i < visitedNode.length; i++) {
             const node = visitedNode[i];
@@ -368,6 +398,7 @@ export default class Path extends Component {
                         currentNode['isVisited'] = false;
                         currentNode['isShortestPathNode'] = false;
                         currentNode['distance'] = 0;
+                        currentNode['distanceSum'] = 0;
                         newGrid[row][col] = currentNode
                     } else {
                         // currentNode['isWall'] = false;
@@ -375,6 +406,7 @@ export default class Path extends Component {
                         currentNode['isVisited'] = false;
                         currentNode['isShortestPathNode'] = false;
                         currentNode['distance'] = 99999999;
+                        currentNode['distanceSum'] = 99999999;
                         newGrid[row][col] = currentNode
                     }
                 }
@@ -415,6 +447,8 @@ export default class Path extends Component {
         } else if (algorithm === "Djikstra") {
             this.visualizeDjikstra()
             // this.instantAnimationWithShortestPath();
+        } else if (algorithm === "AStar") {
+            this.visualizeAStar();
         }
     }
 
@@ -461,6 +495,7 @@ export default class Path extends Component {
                                 <option value="BFS"> BFS</option>
                                 <option value="DFS"> DFS</option>
                                 <option value="Djikstra"> Djikstra </option>
+                                <option value="AStar"> A* </option>
                             </select>
                         </div>
                     </Button>
