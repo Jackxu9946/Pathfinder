@@ -1,21 +1,35 @@
+.outerContainer {
+    display: block;
+    margin-left: 10px;
+    margin-right: 10px;
+    line-height: 0;
+    position:relative;
+}
+
 .grids {
+    margin-left: 100px;
     width: 100%;
     width: 100vw;
     height: 100%;
     height: 100vh;
     position: relative;
-    display: inline-grid;
-    /*border-collapse: collapse;*/
+    display: inline-block;
+    padding: 0px;
+    border: 0px;
+    border-collapse: collapse;
     white-space-collapsing:discard;
+    line-height: 0px;
 }
 
 .row {
-    /*border-collapse: collapse;*/
+    border-collapse: collapse;
     width: 100%;
-    height: 5%;
+    height: calc(100%/30);
+    /*height: 100%;*/
     box-sizing: border-box;
-    padding: 0;
+    padding: 0px;
     white-space-collapsing:discard;
+    line-height: 0px;
 }
 
 .button {
