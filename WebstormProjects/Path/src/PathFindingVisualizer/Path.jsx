@@ -247,7 +247,7 @@ export default class Path extends Component {
         const setTimeoutAgainFk = shortestPath.length + beforeTimeStartInterval;
         setTimeout(() => {
             this.setState({alreadyVisualized: true, inAnimation:false})
-        }, TIME_OUT_CONST * (setTimeoutAgainFk + 10))
+        }, TIME_OUT_CONST * (setTimeoutAgainFk + 50))
     }
 
     visualizeAStar() {
@@ -268,7 +268,7 @@ export default class Path extends Component {
         const setTimeoutAgainFk = shortestPath.length + beforeTimeStartInterval;
         setTimeout(() => {
             this.setState({alreadyVisualized: true, inAnimation:false})
-        }, TIME_OUT_CONST * (setTimeoutAgainFk + 10))
+        }, TIME_OUT_CONST * (setTimeoutAgainFk + 50))
     }
 
     // visitedNode(List) = All of the nodes that makes the shortest path from start to end
@@ -349,7 +349,7 @@ export default class Path extends Component {
         const {nodes,initialAnimationFinished,currentStartNode, currentEndNode, algorithm} = this.state;
         const startNode = nodes[currentStartNode[0]][currentStartNode[1]];
         const endNode = nodes[currentEndNode[0]][currentEndNode[1]];
-        var visitedNode
+        var visitedNode;
         if (algorithm === "Djikstra") {
             visitedNode = Dijkstra(nodes, startNode, endNode);
         } else if (algorithm ==="AStar") {
@@ -441,7 +441,7 @@ export default class Path extends Component {
 
     visualizeAlgorithm() {
         const {algorithm} = this.state;
-        this.clearBoard();
+        this.clearBoard(true);
         // this.setState({alreadyVisualized:false});
         if (algorithm === "BFS") {
             this.visualizeBFS();
@@ -467,7 +467,7 @@ export default class Path extends Component {
 
     selectAlgorithm(event) {
         this.setState({algorithm: event.target.value});
-        this.clearBoard();
+        this.clearBoard(true);
     }
 
 
@@ -480,19 +480,19 @@ export default class Path extends Component {
         return (
             <div className ="outerContainer">
                 <nav className="navbar navbar-expand-lg navbar-light bg-light centerNavbar">
-                    <Button className="btn button" onClick={() => this.visualizeAlgorithm()}>
+                    <Button className="button" onClick={() => this.visualizeAlgorithm()}>
                         Visualize {algorithm}
                     </Button>
-                    <Button className="btn button" onClick={() => this.clearBoard(true)}>
+                    <Button className="button" onClick={() => this.clearBoard(true)}>
                         Clear Board
                     </Button>
-                    <Button className="btn button" onClick={() => this.clearWall()}>
+                    <Button className="button" onClick={() => this.clearWall()}>
                         Clear Wall
                     </Button>
-                    <Button className="btn button" onClick={() => this.setAddingWeight()}>
+                    <Button className="button" onClick={() => this.setAddingWeight()}>
                         {message}
                     </Button>
-                    <Button>
+                    <Button className="button">
                         <div className ="dropdown">
                             <select className ="AlgorithmSelect" onChange={this.selectAlgorithm}>
                                 <option value="BFS"> BFS</option>
@@ -502,7 +502,7 @@ export default class Path extends Component {
                             </select>
                         </div>
                     </Button>
-                    <Button>
+                    <Button className="button">
                         <div className ="dropdown">
                             Speed:
                             <select className = "AlgorithmSelect" onChange = {this.selectSpeed} >
@@ -539,6 +539,11 @@ export default class Path extends Component {
                             <div className='box Wall'>
                             </div>
                             Wall
+                        </li>
+                        <li className="iconList">
+                            <div className='box weightedNode'>
+                            </div>
+                            Weighted Node
                         </li>
                     </ul>
                 </div>

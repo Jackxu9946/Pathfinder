@@ -31,15 +31,17 @@ export function AStar(grid, startNode, endNode) {
                         const aboveNodeDistance = aboveNode['distance'];
                         const aboveNodeWeight = aboveNode['nodeWeight'];
                         const toTopNodeDistance = currentNodeDistance + aboveNodeWeight;
-                        if (toTopNodeDistance < aboveNodeDistance) {
-                            aboveNode['distance'] = toTopNodeDistance;
-                            aboveNode['previous'] = [currentRow, currentCol];
-                        }
+                        // if (toTopNodeDistance < aboveNodeDistance) {
+                        //     aboveNode['distance'] = toTopNodeDistance;
+                        //     aboveNode['previous'] = [currentRow, currentCol];
+                        // }
                         // g = toTopNodeDistance
                         // h = manhattanDistanceHeuristic
-                        const estimatedCostToEnd = manhattanDistanceHeuristic(aboveNode, endNode);
+                        const estimatedCostToEnd = manhattanDistanceHeuristic(aboveNode, endNode) + toTopNodeDistance;
                         if (estimatedCostToEnd < aboveNode['distanceSum']) {
                             aboveNode['distanceSum'] = estimatedCostToEnd;
+                            aboveNode['distance'] = toTopNodeDistance;
+                            aboveNode['previous'] = [currentRow, currentCol];
                         }
                     }
                 }
@@ -49,13 +51,15 @@ export function AStar(grid, startNode, endNode) {
                         const bottomNodeDistance = bottomNode['distance'];
                         const bottomNodeWeight = bottomNode['nodeWeight'];
                         const toBottomNodeDistance = currentNodeDistance + bottomNodeWeight;
-                        if (toBottomNodeDistance < bottomNodeDistance) {
-                            bottomNode['distance'] = toBottomNodeDistance;
-                            bottomNode['previous'] = [currentRow, currentCol];
-                        }
-                        const estimatedCostToEnd = manhattanDistanceHeuristic(bottomNode, endNode);
+                        // if (toBottomNodeDistance < bottomNodeDistance) {
+                        //     bottomNode['distance'] = toBottomNodeDistance;
+                        //     bottomNode['previous'] = [currentRow, currentCol];
+                        // }
+                        const estimatedCostToEnd = manhattanDistanceHeuristic(bottomNode, endNode) + toBottomNodeDistance;
                         if (estimatedCostToEnd < bottomNode['distanceSum']) {
                             bottomNode['distanceSum'] = estimatedCostToEnd;
+                                bottomNode['distance'] = toBottomNodeDistance;
+                                bottomNode['previous'] = [currentRow, currentCol];
                         }
                     }
                 }
@@ -65,14 +69,16 @@ export function AStar(grid, startNode, endNode) {
                         const leftNodeDistance = leftNode['distance'];
                         const leftNodeWeight = leftNode['nodeWeight'];
                         const toLeftNodeDistance = currentNodeDistance + leftNodeWeight;
-                        if (toLeftNodeDistance < leftNodeDistance) {
+                        // if (toLeftNodeDistance < leftNodeDistance) {
+                        //     leftNode['distance'] = toLeftNodeDistance;
+                        //     leftNode['previous'] = [currentRow, currentCol];
+                        // }
+                        const estimatedCostToEnd = manhattanDistanceHeuristic(leftNode, endNode) + toLeftNodeDistance;
+                        if (estimatedCostToEnd < leftNode['distanceSum']) {
+                            leftNode['distanceSum'] = estimatedCostToEnd;
                             leftNode['distance'] = toLeftNodeDistance;
                             leftNode['previous'] = [currentRow, currentCol];
                         }
-                    }
-                    const estimatedCostToEnd = manhattanDistanceHeuristic(leftNode, endNode);
-                    if (estimatedCostToEnd < leftNode['distanceSum']) {
-                        leftNode['distanceSum'] = estimatedCostToEnd;
                     }
                 }
                 if (!currentNode['isRight']) {
@@ -81,14 +87,16 @@ export function AStar(grid, startNode, endNode) {
                         const rightNodeDistance = rightNode['distance'];
                         const rightNodeWeight = rightNode['nodeWeight'];
                         const toRightNodeDistance = currentNodeDistance + rightNodeWeight;
-                        if (toRightNodeDistance < rightNodeDistance) {
+                        // if (toRightNodeDistance < rightNodeDistance) {
+                        //     rightNode['distance'] = toRightNodeDistance;
+                        //     rightNode['previous'] = [currentRow, currentCol];
+                        // }
+                        const estimatedCostToEnd = manhattanDistanceHeuristic(rightNode, endNode) + toRightNodeDistance;
+                        if (estimatedCostToEnd < rightNode['distanceSum']) {
+                            rightNode['distanceSum'] = estimatedCostToEnd;
                             rightNode['distance'] = toRightNodeDistance;
                             rightNode['previous'] = [currentRow, currentCol];
                         }
-                    }
-                    const estimatedCostToEnd = manhattanDistanceHeuristic(rightNode, endNode);
-                    if (estimatedCostToEnd < rightNode['distanceSum']) {
-                        rightNode['distanceSum'] = estimatedCostToEnd;
                     }
                 }
                 visitedInOrder.push(currentNode);

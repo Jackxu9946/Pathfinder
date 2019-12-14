@@ -44,10 +44,20 @@
     /*border:solid;*/
 }
 
+.button {
+    background-color: darkgray !important;
+    border-color: darkgray !important;
+}
+
+.AlgorithmSelect {
+    background-color: darkgray !important;
+}
+
 .centerNavbar {
     align-items: center;
     display: inline-block;
     list-style-type: none;
+    background-color: lightgray;
 }
 
 .iconList {
@@ -58,6 +68,7 @@
 
 .iconListDiv {
     margin: 10px;
+    margin-bottom: 20px;
 }
 
 .box {
@@ -105,4 +116,8 @@
     font-size: 16px;
     border: 2px;
     cursor: pointer;
+}
+
+.weightedNode {
+    background-color:bisque;
 }

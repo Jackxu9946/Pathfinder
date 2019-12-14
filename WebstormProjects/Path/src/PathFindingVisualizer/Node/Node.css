@@ -2,11 +2,11 @@
     width: calc(100%/60);
     min-height: 20px;
     max-height: 20px;
-    outline: 1px solid deepskyblue;
+    outline: 0.5px solid lightblue;
     display: inline-grid;
     position: relative;
     border-collapse: collapse;
-    padding: 0px;
+    padding: 0px
 }
 
 .node-finish {
@@ -87,6 +87,33 @@
 
 .node-wall {
     background-color: black;
+    animation-name: wallAnimation;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-delay: 0s;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: backwards;
+    animation-play-state:running;
+}
+
+@keyframes wallAnimation {
+    0% {
+        transform: scale(0.6);
+    }
+
+    25% {
+        transform: scale(0.75);
+    }
+
+    75% {
+        transform: scale(0.85);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
 }
 
 .node-shortest-path-instant-animation {
