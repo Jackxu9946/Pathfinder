@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Node from './Node/Node';
+import Tutorial from './Tutorial';
 
 import './Path.css'
 import {BFS} from './Algorithms/BFS';
@@ -8,6 +9,9 @@ import {constructShortestPath, Dijkstra} from "./Algorithms/Djikstra"
 import {AStar} from "./Algorithms/AStar";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button} from 'react-bootstrap';
+// import Popup from "reactjs-popup";
+import wallCreation from './Resources/WallCreation.gif'
+import Modal from "react-bootstrap/Modal";
 
 
 const START_NODE_ROW = 0;
@@ -19,6 +23,7 @@ const GRID_COL_LENGTH = 60;
 // const GRID_ROW_LENGTH = 10;
 // const GRID_COL_LENGTH = 10;
 var TIME_OUT_CONST = 25;
+
 
 export default class Path extends Component {
     constructor(prop) {
@@ -36,12 +41,15 @@ export default class Path extends Component {
             alreadyVisualized: false,
             inAnimation: false,
             addingWeight: false,
+            currentSlide: 0,
         };
         this.selectAlgorithm = this.selectAlgorithm.bind(this);
         this.visualizeDFS = this.visualizeDFS.bind(this);
         this.visualizeBFS = this.visualizeBFS.bind(this);
         this.setAddingWeight = this.setAddingWeight.bind(this);
         this.instantNonAnimation = this.instantNonAnimation.bind(this);
+        this.incrementCurrentSlide = this.incrementCurrentSlide.bind(this);
+        this.decrementCurrentSlide = this.decrementCurrentSlide.bind(this);
     }
 
     setAddingWeight() {
@@ -470,15 +478,136 @@ export default class Path extends Component {
         this.clearBoard(true);
     }
 
+    incrementCurrentSlide() {
+        // console.log(this.state.currentScale);
+        var currentVal = this.state.currentSlide;
+        currentVal += 1;
+        this.setState({currentSlide: currentVal});
+        // this.setState({currentSlide: this.state.currentSlide + 1 });
+        // console.log(this.state.currentSlide)
+    }
+
+    decrementCurrentSlide() {
+        var currentVal = this.state.currentSlide;
+        currentVal -= 1;
+        this.setState({currentSlide: currentVal});
+        // this.setState({currentSlide: this.state.currentSlide - 1 });
+        console.log()
+    }
+
+    generateNextSectionButtons() {
+        return (
+            <div className='backOrNextSection'>
+                <Button className='backButton' onClick={() => this.decrementCurrentSlide()}>
+                    Back
+                </Button>
+                <Button className='nextButton' onClick={() => this.incrementCurrentSlide()}>
+                    Next
+                </Button>
+            </div>
+        )
+    }
+
+    initialTutorialSlideShow() {
+        var chosenSlide = this.state.currentSlide;
+        if (chosenSlide === 0 ) {
+            return (
+                <div className="tutorial">
+                    Welcome to my pathfinding visualizer.<br></br>
+                    This was a side project inspired by Clement Mihailescu's pathfinding visualizer. <br></br>
+                    The goal is to show how the algorithm make their decision to reach the end point through visualization. <br></br>
+                    Press next to begin the tutorial on how to navigate this visualizer. <br></br>
+                    Click anywhere outside the modal to exit the tutorial and begin visualizing!
+                    {this.generateNextSectionButtons()}
+                    {/*I used this project as an opportunity to learn reactJS, front-end development and learn more about algorithms.*/}
+                    {/*Welcome to my pathfinding visualizer. This was a side project inspired by Clement Mihailescu's pathfinding visualizer.*/}
+                    {/*/!*The goal is to show what path the algorithms take before reaching their destination*!/*/}
+                    {/*<Button className='skipButton'>*/}
+                        {/*Skip*/}
+                    {/*</Button>*/}
+                </div>
+            )
+        } else if (chosenSlide === 1) {
+            return (
+            <div className='tutorial'>
+                <div className='tutorialButtonContainer'>
+                    <Button className="button tutorialMenu">
+                        Visualize BFS
+                    </Button>
+                        Visualize BFS is used to start the path finding animation
+                    <br></br>
+                    <Button className="button tutorialMenu">
+                        Clear Board
+                    </Button>
+                        Clear Board is used to reset the board to its initial state(no walls/no weights)
+                    <br></br>
+                    <Button className="button tutorialMenu">
+                        Clear Wall
+                    </Button>
+                        Clear Wall is used to clear all the walls that were created
+                    <br></br>
+                    <Button className="button tutorialMenu">
+                        Add Weight
+                    </Button>
+                        Add weight is used to add weight to a specific node
+                    <br></br>
+                    <Button className="button tutorialMenu">
+                        BFS
+                    </Button>
+                        The BFS dropdown menu is used to select which algorithm to visualize
+                    <br></br>
+                    <Button className="button tutorialMenu">
+                        Speed:
+                    </Button>
+                        The speed dropdown menu is used to select how fast you want the algorithm to run
+                    <br></br>
+                </div>
+                {this.generateNextSectionButtons()}
+            </div>
+            )
+        } else if (chosenSlide == 2) {
+            return (
+                <div className='tutorial'>
+                    Walls can be made by clicking on any node and then dragging it across the grid as shown in the video below.
+                    <br></br>
+                    {/*<video controls autoPlay={true} loop={true}>*/}
+                        {/*<source src={"src/traffic.mp4"} type={"video/mp4"}>*/}
+                        {/*</source>*/}
+                    {/*</video>*/}
+                    {/*<iframe width={200} height={200} src="https://www.youtube.com/watch?v=K79n-yRmTR0">*/}
+                    {/*</iframe>*/}
+                    {/*<iframe width="560" height="315" src="https://www.youtube.com/embed/sLAO2QartWk" frameBorder="0"*/}
+                            {/*allow="accelerometer; autoplay=enabled; encrypted-media; gyroscope; picture-in-picture"*/}
+                            {/*allowFullScreen>*/}
+                    {/*</iframe>*/}
+                    <img src={wallCreation}>
+                    </img>
+                    {/*<img src={"src/PathFindingVisualizer/Resources/WallCreation.gif"}>*/}
+                    {/*</img>*/}
+                    {this.generateNextSectionButtons()}
+                </div>
+            )
+        }
+    }
 
     render() {
+        console.log(this.state.currentSlide);
         const {nodes, mousePressed,algorithm, alreadyVisualized, addingWeight} = this.state;
-        var message = "Add weight";
+        var message = "Add Weight";
         if (addingWeight) {
-            message = "Stop adding weight";
+            message = "Stop Adding Weight";
         }
         return (
             <div className ="outerContainer">
+                {/*<Popup className={'popupSizing'}*/}
+                    {/*modal={true}*/}
+                    {/*defaultOpen={true}*/}
+                       {/*position = "center center"*/}
+                {/*>*/}
+                    {/*{this.initialTutorialSlideShow()}*/}
+                {/*</Popup>*/}
+                <Tutorial>
+                </Tutorial>
                 <nav className="navbar navbar-expand-lg navbar-light bg-light centerNavbar">
                     <Button className="button" onClick={() => this.visualizeAlgorithm()}>
                         Visualize {algorithm}
