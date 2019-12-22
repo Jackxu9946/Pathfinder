@@ -32,6 +32,16 @@ export default class Tutorial extends Component {
         console.log()
     }
 
+    handleKeyPress = event => {
+        if (this.state.show) {
+            if (event.key === "ArrowLeft") {
+                this.decrementCurrentSlide()
+            } else if (event.key === "ArrowRight") {
+                this.incrementCurrentSlide()
+            }
+        }
+        // console.log(event.key);
+    };
     generateNextSectionButtons() {
         return (
             <div className='backOrNextSection'>
@@ -212,15 +222,17 @@ export default class Tutorial extends Component {
         const {show} = this.state;
         return (
             <>
-            <Modal show={show} centered={true} onHide={() => this.handleClose()}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{this.generateTitle()}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>{this.generateBody()}</Modal.Body>
-                <Modal.Footer>
-                    {this.generateNextSectionButtons()}
-                </Modal.Footer>
-            </Modal>
+                <div tabIndex="0" onKeyDown={this.handleKeyPress}>
+                    <Modal show={show} centered={true} onHide={() => this.handleClose()}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>{this.generateTitle()}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>{this.generateBody()}</Modal.Body>
+                        <Modal.Footer>
+                            {this.generateNextSectionButtons()}
+                        </Modal.Footer>
+                    </Modal>
+                </div>
             </>
         )
     }
