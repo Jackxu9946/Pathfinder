@@ -4,6 +4,8 @@ import Modal from "react-bootstrap/Modal";
 import './Tutorial.css';
 import rightArrow from "./Resources/right_arrow.jpg"
 import leftArrow from "./Resources/left_arrow.jpg"
+import wallCreation from "./Resources/WallCreation.gif"
+import instantUpdate from "./Resources/InstantUpdate.gif"
 // import React from "react";
 
 export default class Tutorial extends Component {
@@ -11,8 +13,9 @@ export default class Tutorial extends Component {
         super(prop);
         this.state = {
             currentSlide: 0,
-            show:true
-        }
+            show:true,
+            alreadyHidden: false,
+        };
         this.handleClose = this.handleClose.bind(this);
     }
 
@@ -66,6 +69,91 @@ export default class Tutorial extends Component {
                     All of the boxes on this grid represents a node and the default value to move from one node to another is 1. This can be changed via add weight option when an algorithm allows it.
                 </div>
             )
+        } else if (this.state.currentSlide ===3) {
+            return (
+                <div className='tutorialLayout'>
+                    <Button className="button">
+                        Visualize
+                    </Button>
+                    <p>
+                    Used to begin the animation
+                    </p>
+                    <Button className="button">
+                        Clear Board
+                    </Button>
+                    <p>
+                    Used to clear all the visited node
+                    </p>
+                    <Button className="button">
+                        Clear Wall
+                    </Button>
+                    <p>
+                    Used to clear wall
+                    </p>
+                    <Button className="button">
+                        Add Weight
+                    </Button>
+                    <p>
+                    Used to switch from adding wall to adding weight
+                    </p>
+                </div>
+            )
+        } else if (this.state.currentSlide === 4) {
+            return (
+                <div className="tutorialLayout">
+                    <Button className="button">
+                        <div className ="dropdown">
+                            <select className ="AlgorithmSelect" onChange={this.selectAlgorithm}>
+                                <option value="BFS"> BFS</option>
+                                <option value="DFS"> DFS</option>
+                                <option value="Djikstra"> Djikstra </option>
+                                <option value="AStar"> A* </option>
+                            </select>
+                        </div>
+                    </Button>
+                    <p>
+                        Used to select which algorithm to visualize
+                    </p>
+                    <Button className="button">
+                        <div className ="dropdown">
+                            Speed:
+                            <select className = "AlgorithmSelect" onChange = {this.selectSpeed} >
+                                <option value="Fast"> Fast </option>
+                                <option value="Slow"> Slow </option>
+                                <option value="Average"> Average </option>
+                            </select>
+                        </div>
+                    </Button>
+                    <p>
+                        Used to how fast the visualization runs
+                    </p>
+                </div>
+            )
+        } else if (this.state.currentSlide === 5) {
+            return (
+                <p>
+                    You can make walls by holding down left click and hovering over any node.
+                    <br></br>
+                    Stop making wall by letting go of left click.
+                    <br></br>
+                    Convert any wall back to normal node by hovering over the wall node while holding left click.
+                    <br></br>
+                    <img className ="tutorialVideo"src={wallCreation}>
+                    </img>
+                </p>
+            )
+        } else if (this.state.currentSlide === 6) {
+            return (
+                <p>
+                    After the pathfinding algorithm has found it's destination. You can click on the start/end node
+                    to move them and the path will instantly update.
+                    <br></br>
+                    <img className ="tutorialVideo" src={instantUpdate}>
+                    </img>
+                </p>
+            )
+        } else if (!this.state.alreadyHidden) {
+            this.setState({alreadyHidden:true, show:false})
         }
     }
 
@@ -88,8 +176,33 @@ export default class Tutorial extends Component {
                     Grid layout
                 </div>
             )
+        } else if (this.state.currentSlide === 3) {
+            return (
+                <div>
+                    Buttons
+                </div>
+            )
+        } else if (this.state.currentSlide === 4) {
+            return (
+                <div>
+                    Dropdown
+                </div>
+            )
+        } else if(this.state.currentSlide === 5) {
+            return (
+                <div>
+                    Wall making!
+                </div>
+            )
+        } else if(this.state.currentSlide === 6) {
+            return (
+                <div>
+                    Instant path update!
+                </div>
+            )
         }
     }
+
 
     handleClose() {
         this.setState({show:false});

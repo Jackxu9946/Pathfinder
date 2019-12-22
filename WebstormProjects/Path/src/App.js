@@ -5,7 +5,9 @@ import Path from './PathFindingVisualizer/Path';
 function App() {
   return (
     <div className="App">
-      <Path></Path>
+      <Path>
+          <title>Yeet</title>
+      </Path>
     </div>
   );
 }

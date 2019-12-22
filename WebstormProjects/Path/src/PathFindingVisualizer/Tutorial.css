@@ -20,3 +20,11 @@
     border-color: white !important;
 }
 
+.tutorialLayout {
+    text-align: center;
+}
+
+.tutorialVideo {
+    width: 100%;
+    height: 200px;
+}
